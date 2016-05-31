@@ -40,6 +40,26 @@
 #import <SDWebImage/SDImageCache.h>
 
 
+#pragma mark --首页添加宏开始--
+
+#import <UIImageView+WebCache.h>
+
+#import "HomeModel.h"
+#import "Modoules.h"
+#import "Data.h"
+#import "Pic.h"
+
+#import "Outlet_items.h"
+#import "Image_index.h"
+#import "Outlets_infos.h"
+
+#import "CellType_1.h"
+#import "CellType_2.h"
+#import "CellType_3.h"
+#import "CellType_4.h"
+#import "CellType_7.h"
+#pragma mark --首页添加宏结束--
+
 
 #define kScreenW [UIScreen mainScreen].bounds.size.width
 #define kScreenH [UIScreen mainScreen].bounds.size.height

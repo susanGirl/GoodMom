@@ -11,16 +11,91 @@
 #import "TTConst.h"
 #import "UserViewController.h"
 
+#import "HomePageViewController.h"
+#import "YunYingViewController.h"
+#import "ChildClothesViewController.h"
+#import "ToyViewController.h"
+#import "BeautyMakeUpViewController.h"
+#import "GoodFoodViewController.h"
+#import "HomeToolViewController.h"
+#import "ChildBookViewController.h"
+#import "WMPageController.h"
+#define TSEColor(r, g, b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1.0f]
+#define kTitlesNormalColor TSEColor(45, 48, 53)
+#define kTitleSelectedColor TSEColor(63, 169, 213)
+
+
 @interface RootViewController ()
 @property(nonatomic,strong)NSString *currentSkinMode;//当前皮肤的模式
 
 @end
 
 @implementation RootViewController
+- (void)initMainViewController {
+    
+    // 1.
+    NSMutableArray *homeVCs = [[NSMutableArray alloc] init];
+    NSMutableArray *homeVCTitles = [[NSMutableArray alloc] init];
+    for (int i = 0; i < 8; i++) {
+        Class vcClass;
+        NSString *title;
+        switch (i) {
+            case 0:
+                vcClass = [HomePageViewController class];
+                title = @"首页";
+                break;
+            case 1:
+                vcClass = [YunYingViewController class];
+                title = @"孕婴";
+                break;
+            case 2:
+                vcClass = [ChildClothesViewController class];
+                title = @"童装";
+                break;
+            case 3:
+                vcClass = [ToyViewController class];
+                title = @"玩具";
+                break;
+            case 4:
+                vcClass = [BeautyMakeUpViewController class];
+                title = @"美妆";
+                break;
+            case 5:
+                vcClass = [GoodFoodViewController class];
+                title = @"美食";
+                break;
+            case 6:
+                vcClass = [HomeToolViewController class];
+                title = @"家居";
+                break;
+            case 7:
+                vcClass = [ChildBookViewController class];
+                title = @"童书";
+                break;
+        }
+        [homeVCs addObject:vcClass];
+        [homeVCTitles addObject:title];
+    }
+    
+    WMPageController *homeVC = [[WMPageController alloc] initWithViewControllerClasses:homeVCs andTheirTitles:homeVCTitles];
+    HomeListViewController *homeNav =  [[HomeListViewController alloc] initWithRootViewController:homeVC];
+    
+    [homeVC.navigationController setNavigationBarHidden:YES];// 隐藏NavigationBar
+    homeVC.menuViewStyle = WMMenuViewStyleLine;
+    homeVC.menuItemWidth = 66;
+    homeVC.titleColorNormal = kTitlesNormalColor;
+    homeVC.titleColorSelected = kTitleSelectedColor;
+    homeVC.postNotification = YES;
+    [self addChildViewController:homeNav];
+    
+    // 改变UITabBarItem字体颜色
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:TSEColor(43, 177, 223),NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [self initMainViewController];
     // 创建四个视图控制器
     [self createChildViewControllers];
     //更换tabBar
@@ -67,7 +142,7 @@
     
     
     //添加子控制器
-    [self setUpViewController:[HomeListViewController class] title:@"商城" image:@"Home" selectedImage:@"Home-H"];
+//    [self setUpViewController:[HomeListViewController class] title:@"商城" image:@"Home" selectedImage:@"Home-H"];
     [self setUpViewController:[FriendsListViewController  class] title:@"动态" image:@"Friends" selectedImage:@"Friends-H"];
     [self setUpViewController:[ToolListViewController class] title:@"工具" image:@"Tool" selectedImage:@"Tool-H"];
     [self setUpViewController:[UserViewController class] title:@"我的" image:@"me" selectedImage:@"me-H"];
