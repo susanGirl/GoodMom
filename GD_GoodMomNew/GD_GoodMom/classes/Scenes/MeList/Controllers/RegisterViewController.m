@@ -116,16 +116,17 @@
         user.username = self.userNameTextField.text;
         // 设置密码
         user.password = self.passwordTextField.text;
+#warning 判断头像路径是否存在
         // 设置头像
-        AVFile *file = [AVFile fileWithName:user.username contentsAtPath:self.totalPath];
-
-        [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-
-            [user setObject:file.url forKey:@"avatar"];
-            NSLog(@"---------3-------%@", user[@"avatar"]);
-        }];
-  
-        
+        // 如果沙盒中存在头像路径，才执行存储头像路径到服务器的代码
+        if (self.totalPath != nil) {
+            AVFile *file = [AVFile fileWithName:user.username contentsAtPath:self.totalPath];
+            [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                
+                [user setObject:file.url forKey:@"avatar"];
+                NSLog(@"---------3-------%@", user[@"avatar"]);
+            }];
+        }
         
         // 设置宝宝性别
         [user setObject:@"男宝" forKey:@"babyGender"];

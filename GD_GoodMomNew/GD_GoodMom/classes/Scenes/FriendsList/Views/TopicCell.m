@@ -28,10 +28,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *createdAtLabel;
 // 帖子文字内容
 @property (weak, nonatomic) IBOutlet UILabel *topicTextLabel;
-// 收藏帖子的人数
-@property (weak, nonatomic) IBOutlet UIButton *collectionButton;
-// 评论帖子的人数
-@property (weak, nonatomic) IBOutlet UIButton *commentButton;
 // 底部控件底部视图
 @property (weak, nonatomic) IBOutlet UIView *bottomToolView;
 // 帖子图片视图背景视图
@@ -88,26 +84,49 @@
         NSLog(@"%@", self.topic.images);
         
         // 有效图片数量
-         NSInteger imagesCount = 0;
-
+        __block NSInteger imagesCount = 0;
+        
         for (int i = 0; i < self.topic.images.count; i++) {
             AVFile *imgFile = [AVFile fileWithURL:self.topic.images[i]];
-            NSData *imgData = [imgFile getData];
-            UIImage *img = [UIImage imageWithData:imgData];
-            if (img) {
+            
+            [imgFile getThumbnail:YES width:self.imgBackgroundView.width height:kImgBackgroundViewH withBlock:^(UIImage *image, NSError *error) {
                 
-                UIImageView *imgView = [[UIImageView alloc] init];
-                imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
-                imgView.image = img;
-                [self.imgBackgroundView addSubview:imgView];
+                if (image) {
+                    UIImageView *imgView = [[UIImageView alloc] init];
+                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+                    imgView.image = image;
+                    [self.imgBackgroundView addSubview:imgView];
+                    
+                    // 有效图片加“1”
+                    imagesCount += 1;
+                    
+                    self.imagesCount = imagesCount;
+                }
                 
-                // 有效图片加“1”
-                imagesCount += 1;
-            }
+            }];
+            
+            
+            // ============ 另外一种获取图片的方法 =============
+            //            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            //                UIImage *img = [UIImage imageWithData:data];
+            //
+            //                if (img) {
+            //                    UIImageView *imgView = [[UIImageView alloc] init];
+            //                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+            //                    imgView.image = img;
+            //                    [self.imgBackgroundView addSubview:imgView];
+            //
+            //                    // 有效图片加“1”
+            //                    imagesCount += 1;
+            //
+            //                    self.imagesCount = imagesCount;
+            //                }
+            //                
+            //            } progressBlock:^(NSInteger percentDone) {
+            //                
+            //            }];
+            // ================================
         }
-        
-        self.imagesCount = imagesCount;
-        NSLog(@"%ld", self.imagesCount);
 
         // 设置收藏帖子的人数
         [self setupButtonTitle:self.collectionButton count:self.topic.collectionCount placeholder:@"收藏"];
@@ -196,16 +215,25 @@
         // 获取帖子当前收藏数量
         NSInteger currentCollectionCount = [[[currentTopic objectForKey:@"localData"] objectForKey:@"collectionCount"] integerValue];
         
+        // 提示框
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:okAction];
+        
         if (collectionButton.selected == NO) {
             // 收藏数量加“1”
             currentCollectionCount += 1;
             // collectionButton改为选中状态
             collectionButton.selected = YES;
+            // 提示收藏成功
+            alert.message = @"收藏成功!";
         } else {
             // 收藏数量减“1”
             currentCollectionCount -= 1;
             // collectionButton改为选中状态
             collectionButton.selected = NO;
+            // 提示取消收藏成功
+            alert.message = @"取消收藏成功!";
         }
 
         // 设置最新收藏数量
@@ -213,13 +241,9 @@
         
         // 保存到服务器
         [currentTopic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-            [alert addAction:okAction];
+
             if (succeeded) {
                 
-                // 提示框
-                alert.message = @"收藏成功";
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
                 
                 // 改变帖子页面显示的收藏数量

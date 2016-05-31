@@ -1306,6 +1306,7 @@
 				TargetAttributes = {
 					C21180371CF304290099782B = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 33W95PF4B3;
 					};
 				};
 			};
@@ -1712,9 +1713,10 @@
 			baseConfigurationReference = 2CD58D9DCC04F0A139AF130E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GD_GoodMom/classes/Helpers/MyHeader.pch";
 				INFOPLIST_FILE = GD_GoodMom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lanou3g.GD-GoodMom";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1726,9 +1728,10 @@
 			baseConfigurationReference = F29BC50FA2E1D1882D817085 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/GD_GoodMom/classes/Helpers/MyHeader.pch";
 				INFOPLIST_FILE = GD_GoodMom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lanou3g.GD-GoodMom";
 				PRODUCT_NAME = "$(TARGET_NAME)";

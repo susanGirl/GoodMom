@@ -108,9 +108,10 @@
             _userNameLabel.text = user.userName;
             barButton.title = @"注销";
             AVFile *avatarFile = [AVFile fileWithURL:user.avatar];
-            NSData *avatarData = [avatarFile getData];
-            _avatarImageView.image = [UIImage imageWithData:avatarData];
-            NSLog(@"-------1----%@", user.avatar);
+            // 获取头像的缩略图
+            [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
+                _avatarImageView.image = image;
+            }];
             
             if (_avatarImageView.image == nil) {
                 _avatarImageView.image = [UIImage imageNamed:@"DefaultAvatar"];

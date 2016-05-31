@@ -62,6 +62,9 @@ static NSString *const topicCommentCellID = @"topicCommentCell";
     if (indexPath.section == 0) {
         TopicCell *topicCell = [tableView dequeueReusableCellWithIdentifier:topicCellID forIndexPath:indexPath];
         topicCell.topic = self.topic;
+        topicCell.collectionButton.hidden = YES;
+        topicCell.commentButton.hidden = YES;
+        self.cellHeight = [topicCell calculateCellHeight];
         return topicCell;
     }
     

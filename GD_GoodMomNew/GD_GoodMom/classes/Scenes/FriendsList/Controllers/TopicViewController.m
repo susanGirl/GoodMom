@@ -81,6 +81,9 @@ static NSString *const topicCellID = @"topicCell";
 #pragma mark -- 网络请求帖子数据 --
 - (void)requestTopics {
     
+    // 重新请求是移除数组内的之前的数据
+    [self.topicsArray removeAllObjects];
+    
     // 显示缓冲进度条
     [MBProgressHUD setupHUDWithFrame:CGRectMake(0, 0, 90, 80) gifName:@"pika" andShowToView:self.tableView];
     
