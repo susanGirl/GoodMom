@@ -7,11 +7,13 @@
 //
 
 #import "LoginViewController.h"
-#import "User.h"
-@interface LoginViewController ()
+#import "RegisterViewController.h"
+#import <AFNetworking.h>
+#import "FileHandle.h"
+
+@interface LoginViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
-
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
 
@@ -21,7 +23,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    //设置标题
+    self.title = @"登录";
 }
 
 #pragma mark----登录按钮
@@ -29,65 +33,135 @@
     
     __weak LoginViewController *loginVC = self;
     
-    UIAlertController *alertControlller = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:(UIAlertControllerStyleAlert)];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
-        if ([alertControlller.message isEqualToString:@"登录成功"]) {
-            [loginVC dismissViewControllerAnimated:YES completion:nil];
-            
-        }
-        
-    }];
-    [alertControlller addAction:action];
     
-    //判断用户名和密码是否为空
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        // 如果登录成功，退出登录页面
+        if ([alert.message isEqualToString:@"登录成功"]) {
+            [loginVC dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+    // 添加到提示框
+    [alert addAction:cancelAction];
+    
+    // 判断用户名和密码是否为空
     if ([_userNameTextField.text isEqualToString:@""] || [_passwordTextField.text isEqualToString:@""]) {
         
-        alertControlller.message = @"用户名或密码不能为空";
-        [self presentViewController:alertControlller animated:YES completion:nil];
+        alert.message = @"用户名或密码不能为空";
+        [loginVC presentViewController:alert animated:YES completion:nil];
         
-    }else{
-        
+    } else {
         
         [AVUser logInWithUsernameInBackground:self.userNameTextField.text password:self.passwordTextField.text block:^(AVUser *user, NSError *error) {
-            
             if (user != nil) {
                 
-                alertControlller.message = @"登录成功";
-                User *user1 = [User new];
+                // 登录成功
+                NSLog(@"登录成功");
+                // 改变登录状态
+                [user setObject:[NSNumber numberWithBool:YES] forKey:@"loginState"];
+                // 保存状态到服务器
+                [user saveInBackground];
                 
-                user1.userName = _userNameTextField.text;
-                user1.password = _passwordTextField.text;
+                User *theUser = [User new];
+                theUser.userName = user.username;
+                theUser.loginState = user[@"loginState"];
+                theUser.passWord = user.password;
+                // 头像URL
+                AVQuery *avatarURLQuery = [AVQuery queryWithClassName:@"_File"];
+                [avatarURLQuery whereKey:@"name" equalTo:[AVUser currentUser].username];
+                [avatarURLQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    NSLog(@"----9---%@", objects);
+                    AVObject *user = objects.lastObject;
+                    NSString *avatarURL = [user objectForKey:@"url"];
+                    theUser.avatar = avatarURL;
+                    NSLog(@"---------2-----%@", theUser.avatar);
+                    
+                    // block传值，将user传递到“我的”页面
+                    self.block(theUser);
+                    
+                    // 保存到本地
+                    [FileHandle saveUserInfo:theUser];
+                    
+                    // 登录成功，退出登录页面
+                    [loginVC dismissViewControllerAnimated:YES completion:nil];
+                }];
                 
-                
-                //存储数据到本地
-                [FileHandle saveUserInfo:user1];
-                NSLog(@"%@",user1);
-                    //传值
-                loginVC.completion(user1);
-                
-                 [loginVC dismissViewControllerAnimated:YES completion:nil];
-                
+            } else {
+                // 登录失败
+                NSLog(@"登录失败，失败代码%@", error);
+                if (error.code == 211) {
+                    alert.message = @"用户名不存在!";
+                    [loginVC presentViewController:alert animated:YES completion:nil];
+                }else {
+                    alert.message = @"登录失败!";
+                    [loginVC presentViewController:alert animated:YES completion:nil];
+                }
                 
             }
-            
         }];
-    
     }
-    
-    
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 
+    
+    
+    // ==========================
+//    __weak LoginViewController *loginVC = self;
+//    
+//    UIAlertController *alertControlller = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:(UIAlertControllerStyleAlert)];
+//    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+//        if ([alertControlller.message isEqualToString:@"登录成功"]) {
+//            [loginVC dismissViewControllerAnimated:YES completion:nil];
+//            
+//        }
+//        
+//    }];
+//    [alertControlller addAction:action];
+//    
+//    //判断用户名和密码是否为空
+//    if ([_userNameTextField.text isEqualToString:@""] || [_passwordTextField.text isEqualToString:@""]) {
+//        
+//        alertControlller.message = @"用户名或密码不能为空";
+//        [self presentViewController:alertControlller animated:YES completion:nil];
+//        
+//    }else{
+//        
+//        
+//        [AVUser logInWithUsernameInBackground:self.userNameTextField.text password:self.passwordTextField.text block:^(AVUser *user, NSError *error) {
+//            
+//            if (user != nil) {
+//                
+//                alertControlller.message = @"登录成功";
+//                User *user1 = [User new];
+//                
+//                user1.userName = _userNameTextField.text;
+//                user1.password = _passwordTextField.text;
+//                
+//                
+//                //存储数据到本地
+//                [FileHandle saveUserInfo:user1];
+//                NSLog(@"%@",user1);
+//                    //传值
+//                loginVC.completion(user1);
+//                
+//                 [loginVC dismissViewControllerAnimated:YES completion:nil];
+//                
+//                
+//            }
+//            
+//        }];
+//    
+//    }
+    // =========================================
+    
 }
+
 
 #pragma mark------注册按钮
 - (IBAction)registerAction:(id)sender {
     
-    __weak LoginViewController *loginVC = self;
-    RegisterViewController *registerVC = [RegisterViewController new];
-    [loginVC presentViewController:registerVC animated:YES completion:nil];
+    RegisterViewController *registerVC = [[RegisterViewController alloc] init];
+    registerVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentViewController:registerVC animated:YES completion:nil];
     
 }
 #pragma mark-----退出按钮
@@ -97,15 +171,27 @@
     
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark -- 点击空白处收回键盘
+- (IBAction)tapEmpty:(id)sender {
+    
+    //键盘回收
+    [_userNameTextField resignFirstResponder];
+    [_passwordTextField resignFirstResponder];
 }
-*/
+
+#pragma mark - UITextFeld Delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    //键盘回收
+    return [_passwordTextField resignFirstResponder] | [_userNameTextField resignFirstResponder];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    
+    
+}
+
+
 
 @end

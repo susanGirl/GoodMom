@@ -2,7 +2,7 @@
 //  User.m
 //  GD_GoodMom
 //
-//  Created by lanou3g on 16/5/25.
+//  Created by 80time on 16/5/25.
 //  Copyright © 2016年 温哲. All rights reserved.
 //
 
@@ -10,10 +10,11 @@
 
 @implementation User
 
-
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key
-{
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     
+}
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@", _avatar];
 }
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "CustomTabBar.h"
+#import "PublishViewController.h"
+
 @interface CustomTabBar ()
 @property(nonatomic,strong)  UIButton *publishButton;
 
@@ -20,9 +22,9 @@
         UIButton *publishButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
         self.publishButton = publishButton;
         [publishButton setBackgroundImage:[UIImage imageNamed:@
-                                           "send-H"] forState:(UIControlStateNormal)];
-        [publishButton setBackgroundImage:[UIImage imageNamed:@"send-H"] forState:(UIControlStateHighlighted)];
-        
+                                           "publish"] forState:(UIControlStateNormal)];
+        [publishButton setBackgroundImage:[UIImage imageNamed:@"publish-H"] forState:(UIControlStateHighlighted)];
+        [publishButton addTarget:self action:@selector(publishClick) forControlEvents:UIControlEventTouchUpInside];
         publishButton.size = publishButton.currentBackgroundImage.size;
         [self addSubview:publishButton];
         
@@ -32,9 +34,15 @@
     return self;
 }
 
+#pragma mark -- 发布按钮事件 --
+- (void)publishClick {
+    // 模态出发帖控制器
+    PublishViewController *publishVC = [PublishViewController new];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:publishVC animated:NO completion:nil];
+}
+
 - (void)layoutSubviews{
 
-    
     [super layoutSubviews];
     //设置发布按钮的frame
     CGFloat width = self.width;
@@ -59,12 +67,8 @@
             button.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
             //增加索引
             index++;
-            
         }
-        
     }
-
-
 }
 
 

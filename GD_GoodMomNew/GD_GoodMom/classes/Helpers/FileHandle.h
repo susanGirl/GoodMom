@@ -7,35 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
 
 @interface FileHandle : NSObject
 
 #pragma mark - 方法
 + (instancetype)shareInstance;
 
-/**
- *  存储用户信息
- *
- *  @param user 用户对象
- */
-+(void)saveUserInfo:(User *)user;
-
-/**
- *  获取用户信息
- *
- *  @return 用户对象
- */
-
-
-+(User *)getUserInfo;
-
-
-/**
- *  删除用户信息
- */
-
-+(void)removeUserInfo;
-
+// 保存用户信息
++ (void)saveUserInfo:(User *)user;
+// 获取用户信息
++ (User *)getUserInfo;
+// 注销用户信息
++ (void)removeUserInfo;
 
 #pragma mark 数据库
 #pragma mark 缓存文件夹

@@ -10,12 +10,12 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import "User.h"
 
-typedef void(^completionBlock)(User *user);
-
+// 传递user的block
+typedef void(^PassUserBlock)(User *user);
 
 @interface LoginViewController : UIViewController
 
-//登录成功后回调此方法
-@property(nonatomic,strong)completionBlock completion;
+// 定义block属性
+@property (nonatomic, copy) PassUserBlock block;
 
 @end

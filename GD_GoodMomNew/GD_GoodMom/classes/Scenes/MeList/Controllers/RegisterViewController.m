@@ -8,20 +8,23 @@
 
 #import "RegisterViewController.h"
 #import <AFNetworking.h>
-#import "Url.h"
 #import "imageNetWork.h"
 #import <UIImageView+WebCache.h>
-@interface RegisterViewController ()<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+#import <AVOSCloud/AVOSCloud.h>
+#import "User.h"
+
+@interface RegisterViewController ()<UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;//用户名
 
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;//密码
 @property (weak, nonatomic) IBOutlet UITextField *repasswordTextField;//重复输入密码
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
-
-
 @property(nonatomic,strong)UIImagePickerController *imagePicker;//图片选择器
-
+// 头像本地存储路径
+@property (strong, nonatomic) NSString *totalPath;
+// 头像的网络url
+@property (strong, nonatomic) NSString *avatarURL;
 
 @end
 
@@ -30,84 +33,50 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //设置标题
+    self.title = @"注册";
     
-    self.imagePicker = [[UIImagePickerController alloc]init];
-    _imagePicker.delegate = self;
+    // 初始化（通过代理取本地相册图片）
+    self.imagePicker = [[UIImagePickerController alloc] init];
+    self.imagePicker.delegate = self;
     
+    // 打开avatarImageView用户交互
+    self.avatarImageView.userInteractionEnabled = YES;
     
 }
 
-
-//注册按钮
-- (IBAction)registerAction:(id)sender {
-        __weak RegisterViewController *registerVC = self;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:(UIAlertControllerStyleAlert)];
-    //    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleCancel) handler:nil];
-    
-    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"OK" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
-        if ([alertController.message isEqualToString:@"注册成功"]) {
-            [registerVC dismissViewControllerAnimated:YES completion:nil];
-        }
-    }];
-    [alertController addAction:cancleAction];
-    
-    if ([_userNameTextField.text isEqualToString:@""]) {
-        alertController.message = @"用户名不能为空";
-        [registerVC presentViewController:alertController animated:YES completion:nil];
-      }else if ([_passwordTextField.text isEqualToString:@""]){
-        
-        alertController.message = @"密码不能为空";
-        [registerVC presentViewController:alertController animated:YES completion:nil];
-        
-        
-    }else if (![_repasswordTextField.text isEqualToString:_passwordTextField.text]){
-        
-        alertController.message  = @"两次输入的密码不一致";
-        [registerVC presentViewController:alertController animated:YES completion:nil];
-        
-        
-    }
-    
-    else{
-        AVUser *user = [AVUser user];// 新建 AVUser 对象实例
-        user.username = self.userNameTextField.text;// 设置用户名
-        user.password =  _passwordTextField.text;// 设置密码
-        //user.email = @"susan_w_z@163.com";// 设置邮箱
-        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                // 注册成功
-                alertController.message = @"注册成功";
-                [registerVC presentViewController:alertController animated:YES completion:nil];
-            } else {
-                // 失败的原因可能有多种，常见的是用户名已经存在。
-                
-                if ([user[@"success"] intValue ] == 202) {
-                    
-                    alertController.message = @"用户名已被占用，请重新注册";
-                    [registerVC presentViewController:alertController animated:YES completion:nil];
-                }
-                alertController.message = @"注册失败";
-             }
-        }];
-    }
-}
 
 #pragma mark---调用相册的协议方法
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    __weak RegisterViewController *registerVC = self;
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    //显示头像
-    _avatarImageView.image = image;
 
-    if (picker.sourceType== UIImagePickerControllerSourceTypeCamera) {
-        
-        UIImageWriteToSavedPhotosAlbum(image, self, @selector(saveImage ), nil);
-    }
-    //隐藏图片选择页面
-    [registerVC dismissViewControllerAnimated:YES completion:nil];
-
+    // 获取本地相册图片
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage]; // UIImagePickerControllerEditedImage:编辑后的图片
+    // 显示图片
+    self.avatarImageView.image = image;
+    // 保存图片
+    [self saveImage:self.avatarImageView.image withName:[AVUser currentUser].username];
     
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(saveImage), nil); // 将相机拍摄的照片保存到相册
+    }
+    
+    // 隐藏图片选择页面
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark -- 保存头像图片 --
+- (void)saveImage:(UIImage *)tempImage withName:(NSString *)imageName {
+    NSData *imageData = UIImagePNGRepresentation(tempImage);
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    self.totalPath = [documentPath stringByAppendingPathComponent:imageName];
+    // 保存到document
+    [imageData writeToFile:self.totalPath atomically:YES];
+}
+
+// 存图片时要执行的操作
+- (void)saveImage {
+    NSLog(@"存图片时要执行的操作");
 }
 
 
@@ -115,14 +84,86 @@
 {
     //隐藏图片选择页面
     [self dismissViewControllerAnimated:YES completion:nil];
-
+    
 }
 
--(void)saveImage{
 
-    NSLog(@"图片存储成功");
+//注册按钮
+- (IBAction)registerAction:(id)sender {
     
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:okAction];
     
+    if ([self.userNameTextField.text isEqualToString:@""]) {
+        // 密码不能为空
+        alertController.message = @"用户名不能为空!";
+        // 弹出提示框
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else if ([self.passwordTextField.text isEqualToString:@""] || self.passwordTextField.text.length < 6) {
+        // 密码不能为空,且要小于六位
+        alertController.message = @"密码不能小于六位!";
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else if (![self.repasswordTextField.text isEqualToString:self.passwordTextField.text]) {
+        // 两次密码不一致
+        alertController.message = @"两次密码不一致，请重新输入!";
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        // 向服务器发送注册信息
+        // 新建AVUser对象实例
+        AVUser *user = [AVUser user];
+        // 设置用户名
+        user.username = self.userNameTextField.text;
+        // 设置密码
+        user.password = self.passwordTextField.text;
+        // 设置头像
+        AVFile *file = [AVFile fileWithName:user.username contentsAtPath:self.totalPath];
+
+        [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+
+            [user setObject:file.url forKey:@"avatar"];
+            NSLog(@"---------3-------%@", user[@"avatar"]);
+        }];
+  
+        
+        
+        // 设置宝宝性别
+        [user setObject:@"男宝" forKey:@"babyGender"];
+        // 设置宝宝出生日期
+        [user setObject:[NSDate date] forKey:@"babyBirthday"];
+        // 设置妈妈出生日期
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        NSDate *momBirthday = [dateFormatter dateFromString:@"20151111"];
+        [user setObject:momBirthday forKey:@"momBirthday"];
+        
+        // 设置爱好
+        [user setObject:@"吃饭睡觉打豆豆" forKey:@"hobby"];
+        
+        // 设置登录状态
+        [user setObject:[NSNumber numberWithBool:NO] forKey:@"loginState"];
+        // 注册
+        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                // 注册成功
+                UIAlertController *okRegisterAlertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"恭喜您注册账号成功，请牢记用户名和密码" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okRegisterAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    // 注册成功，跳转到登录页面
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }];
+                [okRegisterAlertController addAction:okRegisterAction];
+                // 弹出注册成功提示框
+                [self presentViewController:okRegisterAlertController animated:YES completion:nil];
+            } else {
+                // 注册失败
+                NSLog(@"%@", error.description);
+                if (error.code == 202) {
+                    alertController.message = @"用户名已存在!";
+                    [self presentViewController:alertController animated:YES completion:nil];
+                }
+            }
+        }];
+    }
 }
 
 /**
@@ -132,65 +173,54 @@
  */
 - (IBAction)tapAvatarViewAction:(id)sender {
     
-
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:(UIAlertControllerStyleActionSheet)];
-//    UIAlertAction *photoAction  = [UIAlertAction actionWithTitle:@"相册" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
-//        //指定类型
-//        _imagePicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-//        _imagePicker.allowsEditing = YES;
-//        [self presentViewController:_imagePicker animated:YES completion:nil];
-//        
-//    }];
-//    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
-//        _imagePicker.sourceType =UIImagePickerControllerSourceTypeCamera;
-//        _imagePicker.allowsEditing = YES;
-//        [self presentViewController:_imagePicker animated:YES completion:nil];
-//    }];
-//    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleCancel) handler:nil];
-//    [alertController addAction:photoAction];
-//    [alertController addAction:cameraAction];
-//    [alertController addAction:cancleAction];
-//   //显示alertController
-//    [self presentViewController:alertController animated:YES completion:nil];
-   [self file];
- }
-
--(void)file{
-
-    AVFile *file = [AVFile fileWithURL:@"http://p4.music.126.net/SwbJDnhHO0DUDWvDXJGAfQ==/6655343883051583.jpg"];
-    [file getData];
-    //执行上传
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        NSLog(@"%@",file.url);
+    // 添加AlertSheet
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *photoAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
+        // 指定资源类型
+        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        self.imagePicker.allowsEditing = YES; // 允许编辑
+        // 点击头像时弹出图片选择器
+        [self presentViewController:self.imagePicker animated:YES completion:nil];
     }];
     
-    //上传进度监听
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            AVQuery  *query = [AVQuery queryWithClassName:@"_File"];
-            [query whereKey:@"priority" equalTo:@0];
-            [query whereKey:@"priority" equalTo:@1];
-            // 如果这样写，第二个条件将覆盖第一个条件，查询只会返回 priority = 1 的结果
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            }];
-        }
+    UIAlertAction *cameralAction = [UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-    } progressBlock:^(NSInteger percentDone) {
-        
-        
+        // 指定资源类型
+        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.imagePicker.allowsEditing = YES; // 允许编辑
+        // 点击头像时弹出图片选择器
+        [self presentViewController:self.imagePicker animated:YES completion:nil];
     }];
- 
-}
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+    // 添加
+    [alert addAction:photoAction];
+    [alert addAction:cameralAction];
+    [alert addAction:cancelAction];
+    
+    // 显示alertController
+    [self presentViewController:alert animated:YES completion:nil];
 
+ }
 
 #pragma mark----退出按钮
 - (IBAction)exitAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UITextField Delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    return [_userNameTextField resignFirstResponder] | [_passwordTextField resignFirstResponder] | [_repasswordTextField resignFirstResponder];
+}
 
-
+- (IBAction)tapEmpty:(id)sender {
+    
+    //键盘回收
+    [_userNameTextField resignFirstResponder];
+    [_passwordTextField resignFirstResponder];
+    [_repasswordTextField resignFirstResponder];
+}
 
 
 - (void)didReceiveMemoryWarning {

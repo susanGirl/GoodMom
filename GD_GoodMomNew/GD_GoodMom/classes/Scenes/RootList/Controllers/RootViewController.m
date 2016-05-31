@@ -9,6 +9,8 @@
 #import "RootViewController.h"
 #import "CustomTabBar.h"
 #import "TTConst.h"
+#import "UserViewController.h"
+
 @interface RootViewController ()
 @property(nonatomic,strong)NSString *currentSkinMode;//当前皮肤的模式
 
@@ -65,7 +67,7 @@
     
     
     //添加子控制器
-    [self setUpViewController:[HomeListViewController class] title:@"Home" image:@"Home" selectedImage:@"Home-H"];
+    [self setUpViewController:[HomeListViewController class] title:@"商城" image:@"Home" selectedImage:@"Home-H"];
     [self setUpViewController:[FriendsListViewController  class] title:@"动态" image:@"Friends" selectedImage:@"Friends-H"];
     [self setUpViewController:[ToolListViewController class] title:@"工具" image:@"Tool" selectedImage:@"Tool-H"];
     [self setUpViewController:[UserViewController class] title:@"我的" image:@"me" selectedImage:@"me-H"];

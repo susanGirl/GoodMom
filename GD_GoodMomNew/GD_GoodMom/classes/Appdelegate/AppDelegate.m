@@ -25,16 +25,12 @@
     self.window.rootViewController = rootVC;
     
     
-    [AVOSCloud setApplicationId:@"cT0xSMnf6cxIn8TjvokyfdOd-gzGzoHsz"
-                      clientKey:@"7Wwr8918aCROc6MMRgyyzkQV"];
-    
+#pragma mark -- LeanCloud配置 --
+    // 设置AppID和AppKey
+    [AVOSCloud setApplicationId:@"94HnxCqr7NY4QODr87sedR36-gzGzoHsz"
+                      clientKey:@"tSNO0iEHsWlfootq1PXaxHwR"];
+    // 跟踪统计应用的打开情况
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    
-    
-    
-    
-
-    
     
     
     return YES;

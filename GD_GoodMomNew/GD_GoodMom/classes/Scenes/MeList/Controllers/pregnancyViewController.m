@@ -25,7 +25,7 @@
     self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width - 130, 40);
     
     //搜索时背景变模糊
-    self.searchController.obscuresBackgroundDuringPresentation = YES;
+//    self.searchController.obscuresBackgroundDuringPresentation = YES;
     //是否隐藏导航栏
     self.searchController.hidesNavigationBarDuringPresentation = NO;
 

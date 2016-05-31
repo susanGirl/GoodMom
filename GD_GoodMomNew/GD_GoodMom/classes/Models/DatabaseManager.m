@@ -9,6 +9,8 @@
 
 #import "DatabaseManager.h"
 #import <sqlite3.h>
+#import "FileHandle.h"
+
 @implementation DatabaseManager
 
 #pragma mark--- 创建单例对象
@@ -32,7 +34,7 @@ static  sqlite3 *db = nil;
         
     }
     //数据库存储在沙盒中的caches的文件夹下
-    NSString *dbpath = [[FileHandle shareInstance ]databaseFielePath:@"GD_GoodMom.sqlite"];
+    NSString *dbpath = [[FileHandle shareInstance] databaseFielePath:@"GD_GoodMom.sqlite"];
     //打开数据库，第一个参数是数据库存储的完整的路径
     //如果数据库文件已经存在，是打开操作。如果数据库文件不存在，是先创建再打开
     int result = sqlite3_open([dbpath UTF8String], &db);

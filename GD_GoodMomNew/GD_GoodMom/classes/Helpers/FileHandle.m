@@ -7,22 +7,17 @@
 //
 
 #import "FileHandle.h"
-#import "User.h"
+
 @implementation FileHandle
-//存储对象类型
-#define KuserDefaults(object,key) [[NSUserDefaults standardUserDefaults]setObject:object forKey:key];
-//存储BOOL类型
-#define kBoolUserDegaults(value,key) [[NSUserDefaults standardUserDefaults]setBool:value forKey:key]
 
-//获取对象类型的值
-#define kGetObjectUserDefaults(key) [[NSUserDefaults standardUserDefaults]objectForKey:key]
-
-
-//获取BOOL类型
-#define kGetBoolUserDefaults(key) [[NSUserDefaults standardUserDefaults]boolForKey:key]
-
-
-
+// 存储对象类型（方法宏）
+#define kUserDefaults(object, key) [[NSUserDefaults standardUserDefaults] setObject:object forKey:key]
+// 存储BOOL类型
+#define kBoolUserDefaults(value, key) [[NSUserDefaults standardUserDefaults] setBool:value forKey:key]
+// 获取对象类型
+#define kGetObjectUserDefaults(key) [[NSUserDefaults standardUserDefaults] objectForKey:key]
+// 获取BOOL类型
+#define kGetBoolUserDefaults(key) [[NSUserDefaults standardUserDefaults] boolForKey:key]
 
 static FileHandle *fileDataHandle = nil;
 + (instancetype)shareInstance
@@ -34,50 +29,35 @@ static FileHandle *fileDataHandle = nil;
 }
 
 
-
-
-/**
- *  存储用户信息
- *
- *  @param user 用户对象
- */
-+(void)saveUserInfo:(User *)user{
+// 保存用户信息
++ (void)saveUserInfo:(User *)user {
     
-  KuserDefaults(user.userName, @"userName");
-  KuserDefaults(user.password , @"password");
-  KuserDefaults(user.avatar, @"avatar");
-  kBoolUserDegaults(user.loginState, @"loginState");
-  
-
-   
-}
-/**
- *  获取用户信息
- *
- *  @return 用户对象
- */
-
-+(User *)getUserInfo{
-    
- User *user = [[User alloc]init];
- user.userName   =   kGetObjectUserDefaults(@"userName");
- user.password   =   kGetObjectUserDefaults(@"password");
- user.loginState =   kGetBoolUserDefaults(@"loginState");
- user.avatar =       kGetObjectUserDefaults(@"avatar");
- return user;
+    // 存储用户信息
+    kUserDefaults(user.userName, @"userName");
+    kUserDefaults(user.passWord, @"passWord");
+    kBoolUserDefaults(user.loginState, @"loginState");
+    kUserDefaults(user[@"avatar"], @"avatar");
     
 }
-/**
- *  删除用户信息
- */
 
-+(void)removeUserInfo{
+// 获取用户信息
++ (User *)getUserInfo {
+    
+    User *user = [User new];
+    user.userName = kGetObjectUserDefaults(@"userName");
+    user.passWord = kGetObjectUserDefaults(@"passWord");
+    user.loginState = kGetBoolUserDefaults(@"loginState");
+    user.avatar = kGetObjectUserDefaults(@"avatar");
+    return user;
+}
 
-    KuserDefaults(nil, @"userName");
-    KuserDefaults(nil, @"password");
-    KuserDefaults(nil, @"avatar");
-    kBoolUserDegaults(NO, @"loginState");
-
+// 注销用户信息
++ (void)removeUserInfo {
+    
+    kUserDefaults(nil, @"userName");
+    kUserDefaults(nil, @"passWord");
+    kBoolUserDefaults(NULL, @"loginState");
+    kUserDefaults(nil, @"avatar");
 }
 
 #pragma mark 数据库缓存
