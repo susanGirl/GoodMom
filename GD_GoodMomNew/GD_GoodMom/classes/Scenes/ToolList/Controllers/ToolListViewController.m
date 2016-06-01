@@ -8,6 +8,7 @@
 
 #import "ToolListViewController.h"
 #import "ToolModel.h"
+#import "MyView.h"
 
 @interface ToolListViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 ///主题的视图
@@ -18,6 +19,9 @@
 @property(nonatomic,strong)NSArray *imageArray;
 ///model的数组
 @property(nonatomic,strong)NSMutableArray *modelArray;
+
+///轮播图
+@property(nonatomic,strong)MyView *scrollView;
 
 @end
 static NSString *const ToolCellID = @"ToolCellID";
@@ -84,6 +88,11 @@ static NSString *const HeaderViewID = @"HeaderViewID";
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderViewID forIndexPath:indexPath];
+    
+    self.scrollView = [[MyView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, header.height)];
+    
+    
+    
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"9.jpg"]];
     imageView.frame = header.frame;
     [header addSubview:imageView];

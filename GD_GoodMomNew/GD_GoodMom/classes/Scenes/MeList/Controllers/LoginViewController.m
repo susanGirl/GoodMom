@@ -78,7 +78,7 @@
                     NSLog(@"---------2-----%@", theUser.avatar);
                     
                     // block传值，将user传递到“我的”页面
-                    self.block(theUser);
+                    loginVC.block(theUser);
                     
                     // 保存到本地
                     [FileHandle saveUserInfo:theUser];
