@@ -198,7 +198,7 @@
 		C2CB9E8D1CF471F5003CD4E9 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2CB9E8B1CF471F5003CD4E9 /* RegisterViewController.xib */; };
 		C2D22E121CF6EE50002F1F36 /* TTConst.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E111CF6EE50002F1F36 /* TTConst.m */; };
 		C2D22E151CF6F8B7002F1F36 /* MeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E141CF6F8B7002F1F36 /* MeTableViewController.m */; };
-		C2D22E1A1CF71554002F1F36 /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = C2D22E191CF71554002F1F36 /* exit.png */; };
+		C2D22E1A1CF71554002F1F36 /* exitNew.png in Resources */ = {isa = PBXBuildFile; fileRef = C2D22E191CF71554002F1F36 /* exitNew.png */; };
 		C2D22E1E1CF73123002F1F36 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E1C1CF73123002F1F36 /* AboutViewController.m */; };
 		C2D22E1F1CF73123002F1F36 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D22E1D1CF73123002F1F36 /* AboutViewController.xib */; };
 		C2D22E221CF738F3002F1F36 /* imageNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E211CF738F3002F1F36 /* imageNetWork.m */; };
@@ -483,7 +483,7 @@
 		C2D22E111CF6EE50002F1F36 /* TTConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTConst.m; sourceTree = "<group>"; };
 		C2D22E131CF6F8B7002F1F36 /* MeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeTableViewController.h; sourceTree = "<group>"; };
 		C2D22E141CF6F8B7002F1F36 /* MeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTableViewController.m; sourceTree = "<group>"; };
-		C2D22E191CF71554002F1F36 /* exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit.png; sourceTree = "<group>"; };
+		C2D22E191CF71554002F1F36 /* exitNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exitNew.png; sourceTree = "<group>"; };
 		C2D22E1B1CF73123002F1F36 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		C2D22E1C1CF73123002F1F36 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		C2D22E1D1CF73123002F1F36 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -664,7 +664,7 @@
 				C21B96231CFD3C01001E6A17 /* image */,
 				C21B95941CFD3BC2001E6A17 /* Story.plist */,
 				DED1CCE21CFD2F4D00D64F62 /* pika.gif */,
-				C2D22E191CF71554002F1F36 /* exit.png */,
+				C2D22E191CF71554002F1F36 /* exitNew.png */,
 				C2CB9E7F1CF45671003CD4E9 /* woman.png */,
 				C2CB9E7A1CF44A9D003CD4E9 /* girl.png */,
 			);
@@ -1374,7 +1374,7 @@
 				C23D90F21CFD8C3B00B691A8 /* 05.jpg in Resources */,
 				C21B97161CFD6E53001E6A17 /* zan1.png in Resources */,
 				C23D90E21CFD8C3B00B691A8 /* HomePageViewController.xib in Resources */,
-				C2D22E1A1CF71554002F1F36 /* exit.png in Resources */,
+				C2D22E1A1CF71554002F1F36 /* exitNew.png in Resources */,
 				C21B97111CFD6E53001E6A17 /* turn_h.png in Resources */,
 				C23D90ED1CFD8C3B00B691A8 /* 00.jpg in Resources */,
 				C21B97011CFD6E53001E6A17 /* seen.png in Resources */,

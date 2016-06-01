@@ -341,14 +341,9 @@
                 [topic setObject:imgURLArray forKey:@"images"];
                 NSLog(@"-----11----%@", _imgURLArray);
                 
-                // 查询当前作者的头像的url
-                AVQuery *query = [AVQuery queryWithClassName:@"_File"];
-                [query whereKey:@"name" equalTo:[AVUser currentUser].username];
-                NSArray *objects = [query findObjects];
-                for (AVObject *obj in objects) {
-                    weakPublishVC.avatarURL = [obj[@"localData"] objectForKey:@"url"];
-                }
-            [topic setObject:weakPublishVC.avatarURL forKey:@"avatar"]; // 设置用户头像url
+                // 存储当前作者的头像的url
+            [topic setObject:[AVUser currentUser][@"avatar"] forKey:@"avatar"];
+            NSLog(@"------18------%@", topic[@"avatar"]);
             weakPublishVC.topic = topic;
             
             // 存储到服务器
