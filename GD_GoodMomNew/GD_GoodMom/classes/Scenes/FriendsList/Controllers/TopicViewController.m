@@ -44,7 +44,7 @@ static NSString *const topicCellID = @"topicCell";
     
     // 减掉遮挡内容显示全部在scrollView上的信息
     CGFloat topOffset = 45; // 显示内容区域距离屏幕顶部偏移量
-    CGFloat bottomOffset = self.tabBarController.tabBar.height; // 显示内容区域距离屏幕底部偏移量
+    CGFloat bottomOffset = 100; // 显示内容区域距离屏幕底部偏移量
     self.tableView.contentInset = UIEdgeInsetsMake(topOffset, 0, bottomOffset, 0);
     // 设置滚动条内边距
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;

@@ -176,8 +176,8 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     for (int i = 0; i < _count; i++) {
         UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenW*i, 0, kScreenW, CGRectGetMaxY(self.imagesScrollView.frame))];
         [imgView sd_setImageWithURL:[NSURL URLWithString:self.imagesArray[i]]placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"%02d.jpg",i]]];
-        
-        [self.imagesScrollView addSubview:imgView];
+#warning 记得取消注释
+//        [self.imagesScrollView addSubview:imgView];
     }
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, self.imagesArray.count * 15, 50)];
     _pageControl.center = CGPointMake(kScreenW/2, CGRectGetMaxY(_imagesScrollView.frame)-25);
@@ -186,7 +186,8 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     _pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:241/255.0 green:158/255.0 blue:194/255.0 alpha:1];
     // 未选中的颜色
     _pageControl.pageIndicatorTintColor = [UIColor grayColor];
-    [self.view addSubview:_pageControl];
+#warning 记得取消注释
+//    [self.view addSubview:_pageControl];
     [_pageControl addTarget:self action:@selector(pageControlAction:) forControlEvents:UIControlEventValueChanged];
 
 }

@@ -82,50 +82,19 @@
         
         // 帖子图片内容
         NSLog(@"%@", self.topic.images);
-        
-        // 有效图片数量
-        __block NSInteger imagesCount = 0;
-        
+
         for (int i = 0; i < self.topic.images.count; i++) {
             AVFile *imgFile = [AVFile fileWithURL:self.topic.images[i]];
-            
-            [imgFile getThumbnail:YES width:self.imgBackgroundView.width height:kImgBackgroundViewH withBlock:^(UIImage *image, NSError *error) {
+            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                UIImage *img = [UIImage imageWithData:data];
+                UIImageView *imgView = [[UIImageView alloc] init];
+                imgView.frame = CGRectMake(0, i * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+                imgView.image = img;
+                [self.imgBackgroundView addSubview:imgView];
                 
-                if (image) {
-                    UIImageView *imgView = [[UIImageView alloc] init];
-                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
-                    imgView.image = image;
-                    [self.imgBackgroundView addSubview:imgView];
-                    
-                    // 有效图片加“1”
-                    imagesCount += 1;
-                    
-                    self.imagesCount = imagesCount;
-                }
+            } progressBlock:^(NSInteger percentDone) {
                 
             }];
-            
-            
-            // ============ 另外一种获取图片的方法 =============
-            //            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-            //                UIImage *img = [UIImage imageWithData:data];
-            //
-            //                if (img) {
-            //                    UIImageView *imgView = [[UIImageView alloc] init];
-            //                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
-            //                    imgView.image = img;
-            //                    [self.imgBackgroundView addSubview:imgView];
-            //
-            //                    // 有效图片加“1”
-            //                    imagesCount += 1;
-            //
-            //                    self.imagesCount = imagesCount;
-            //                }
-            //                
-            //            } progressBlock:^(NSInteger percentDone) {
-            //                
-            //            }];
-            // ================================
         }
 
         // 设置收藏帖子的人数
@@ -184,7 +153,8 @@
     
     // -- 图片位置尺寸 --
     self.imgBackgroundView.y = self.topicTextLabel.y + self.topicTextLabel.height + kCellMargin;
-    self.imgBackgroundView.height = kImgBackgroundViewH * self.imagesCount;
+    self.imgBackgroundView.height = kImgBackgroundViewH * self.topic.images.count;
+    NSLog(@"---------2-------%ld", self.topic.images.count);
     
     // -- 底部控件底部视图位置尺寸 --
     self.bottomToolView.y = CGRectGetMaxY(self.imgBackgroundView.frame) + kCellMargin;
