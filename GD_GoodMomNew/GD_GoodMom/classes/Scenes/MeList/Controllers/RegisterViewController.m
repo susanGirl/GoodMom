@@ -44,6 +44,8 @@
     // 打开avatarImageView用户交互
     self.avatarImageView.userInteractionEnabled = YES;
     
+    
+    
 }
 
 
