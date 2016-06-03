@@ -8,6 +8,7 @@
 
 #import "PersonalInformationCell.h"
 #import <AVOSCloud/AVOSCloud.h>
+
 @interface PersonalInformationCell ()
 
 @end
@@ -23,20 +24,17 @@
         _birsthdayTF.clearButtonMode = UITextFieldViewModeAlways;
         _hobbyTF.clearButtonMode = UITextFieldViewModeAlways;
         _genderTF.clearButtonMode = UITextFieldViewModeAlways;
-        
+#pragma mark--对当前用户相应的属性进行赋值
         AVUser *user = [AVUser currentUser];
         _genderTF.text = user[@"babyGender"];
         _userGender.text = user[@"userGender"];
         _hobbyTF.text = user[@"babyHobby"];
         _birsthdayTF.text = user[@"babybirthday"];
-        
-        
     }
 }
 - (void)layoutSubviews{
     [super layoutSubviews];    
 }
-
 - (void)awakeFromNib {
     [super awakeFromNib];
 

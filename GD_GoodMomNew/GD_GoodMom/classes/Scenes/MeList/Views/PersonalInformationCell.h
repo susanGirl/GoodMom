@@ -14,9 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *genderTF;//宝宝性别
 @property (weak, nonatomic) IBOutlet UITextField *birsthdayTF;//宝宝生日
 @property (weak, nonatomic) IBOutlet UITextField *hobbyTF;//宝宝爱好
-
 @property (weak, nonatomic) IBOutlet UITextField *userGender;//用户性别
-
 @property(nonatomic,strong)User *user;
 
 
