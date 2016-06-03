@@ -7,12 +7,14 @@
 //
 
 #import "TopicCell.h"
+#import "TopicCommentListViewController.h"
+#import "NSDate+HFExtension.h"
 
 // 间距
 #define kCellMargin 5
 // 帖子图片视图背景视图
 #define kImgBackgroundViewW self.contentView.width
-#define kImgBackgroundViewH (kImgBackgroundViewW * 3 / 4)
+#define kImgBackgroundViewH kImgBackgroundViewW
 
 @interface TopicCell ()
 
@@ -60,22 +62,61 @@
         _topic = nil;
         _topic = topic;
         
+        
         // 设置用户头像
         AVFile *file = [AVFile fileWithURL:self.topic.avatar];
         NSData *avatarData = [file getData];
         UIImage *avatarImage = [UIImage imageWithData:avatarData];
         self.avatarImageView.image = avatarImage;
         
+        
         // 设置用户昵称
         self.usernameLabel.text = self.topic.username;
         
         // 设置发帖时间
-        NSDateFormatter *dateformatter = [NSDateFormatter new];
-        NSTimeZone *timeZone = [NSTimeZone localTimeZone];
-        [dateformatter setTimeZone:timeZone];
-        [dateformatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSString *createAtString =  [dateformatter stringFromDate:self.topic.creatAt];
-        self.createdAtLabel.text = createAtString;
+        /**
+         *  日期的最终显示格式
+         *今年
+         *  今天
+         *      1分钟内：刚刚
+         *      1小时内：xx分钟前
+         *      其他：xx小时前
+         *  昨天：昨天 18：56：35
+         *非今年：2015-04-05 18：45：34
+         */
+        // 日期格式化类
+        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+        // 设置日期格式
+        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        if (self.topic.creatAt.isThisYear) {
+            // 今年
+            if (self.topic.creatAt.isToday) {
+                // 今天
+                NSDateComponents *cmps = [[NSDate date] deltaFrom:self.topic.creatAt];
+                if (cmps.hour >= 1) {
+                    // 时间差距 >= 1小时
+                    self.createdAtLabel.text = [NSString stringWithFormat:@"%ld小时前", cmps.hour];
+                }else if (cmps.minute >= 1) {
+                    // 1小时 > 时间差距 >= 1分钟
+                    self.createdAtLabel.text = [NSString stringWithFormat:@"%ld分钟前", cmps.minute];
+                }else {
+                    // 1分钟 > 时间差距
+                    self.createdAtLabel.text = @"刚刚";
+                }
+            } else if (self.topic.creatAt.isYesterday) {
+                // 昨天
+                fmt.dateFormat = @"昨天 HH:mm:ss";
+                self.createdAtLabel.text = [fmt stringFromDate:self.topic.creatAt];
+            } else {
+                // 其他
+                fmt.dateFormat = @"MM-dd HH:mm:ss";
+                self.createdAtLabel.text = [fmt stringFromDate:self.topic.creatAt];
+            }
+        }else {
+            // 非今年
+            self.createdAtLabel.text = [NSString stringWithFormat:@"%@", self.topic.creatAt];
+        }
+        
         
         // 帖子文字内容
         self.topicTextLabel.text = topic.text;
@@ -101,19 +142,9 @@
         [self setupButtonTitle:self.collectionButton count:self.topic.collectionCount placeholder:@"收藏"];
         // 设置评论帖子的人数
         [self setupButtonTitle:self.commentButton count:self.topic.commentCount placeholder:@"评论"];
+        
         // 宝宝性别
         self.babyGenderLabel.text = self.topic.babyGender;
-#warning 计算宝宝年龄
-        // 宝宝年龄
-//        NSDate *currentDate = [NSDate date];
-//        NSDateFormatter *fmt = [NSDateFormatter new];
-//        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-//        NSString *babyBirthday = self.topic.user.babyBirthday;
-        // 当前时间 - 宝贝出生日期 = 宝宝年龄
-        NSDate *babyBirthday = self.topic.babyBirthday;
-        NSString *dateString = [dateformatter stringFromDate:babyBirthday];
-        self.babyBirthdayLabel.text = dateString;
-
     }
 }
 
@@ -146,18 +177,17 @@
     // 文本Y坐标
     self.topicTextLabel.y = CGRectGetMaxY(self.avatarImageView.frame) + kCellMargin;
     // 文本高度
-    CGSize maxSize = CGSizeMake([UIScreen mainScreen].bounds.size.width - 2 * kCellMargin , 10000);
+    CGSize maxSize = CGSizeMake(kScreenW - 2 * kCellMargin , 10000);
     // 计算文本的高度
-    CGFloat textH = [self.topic.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]} context:nil].size.height;
+    CGFloat textH = [self.topic.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]} context:nil].size.height;
     self.topicTextLabel.height = textH;
     
     // -- 图片位置尺寸 --
     self.imgBackgroundView.y = self.topicTextLabel.y + self.topicTextLabel.height + kCellMargin;
     self.imgBackgroundView.height = kImgBackgroundViewH * self.topic.images.count;
-    NSLog(@"---------2-------%ld", self.topic.images.count);
     
     // -- 底部控件底部视图位置尺寸 --
-    self.bottomToolView.y = CGRectGetMaxY(self.imgBackgroundView.frame) + kCellMargin;
+    self.bottomToolView.y = self.imgBackgroundView.y + self.imgBackgroundView.height + kCellMargin;
     
 }
 
@@ -165,7 +195,7 @@
 - (CGFloat)calculateCellHeight {
 
     // cell的高度（包含文字时）
-    return self.bottomToolView.y + 30 + kCellMargin;
+    return self.self.imgBackgroundView.y + self.imgBackgroundView.height + 30 + kCellMargin;
     
 }
 
@@ -235,6 +265,8 @@
 }
 #pragma mark -- 评论帖子 --
 - (IBAction)commentTopicAction:(id)sender {
+ 
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -14,10 +14,10 @@
 #import "MBProgressHUD+gifHUD.h"
 
 
-// 相框宽度
+// 添加照片按钮宽度
 #define kImagesViewW (kScreenW / 6.0)
-// 相框高度
-#define kImagesViewH (kImagesViewW * 3.0 / 4.0)
+// 添加照片按钮高度
+#define kImagesViewH kImagesViewW
 // 相框删除按钮的宽和高
 #define kDeleteButtonW 15
 
@@ -222,22 +222,33 @@
     // 显示缓冲进度条
     [MBProgressHUD setupHUDWithFrame:CGRectMake(0, 0, 90, 80) gifName:@"pika" andShowToView:weakPublishVC.view];
     
-    for (UIImage * image in imagesArray) {
+    
+    if (self.imagesArray.count == 0) {
         
-        // 将图片保存到本地
-        [self saveImage:image withName:[NSString stringWithFormat:@"%@", [NSDate date]]];
-        // 生产图片url
-        AVFile *file = [AVFile fileWithName:[NSString stringWithFormat:@"%@", self.topic.objectId] contentsAtPath:self.totalPath];
-        [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                [weakPublishVC.imgURLArray addObject:file.url];
-                if (weakPublishVC.imgURLArray.count == imagesArray.count) {
-                    // 图片url数组中的url数量和图片数量相等时，开始block传值
-                    block(weakPublishVC.imgURLArray);
+        // -- 帖子中只有文字内容 --
+        block(self.imagesArray);
+        
+    } else {
+        
+        // -- 帖子中有文字内容和图片内容 --
+        for (UIImage * image in imagesArray) {
+            
+            // 将图片保存到本地
+            [self saveImage:image withName:[NSString stringWithFormat:@"%@", [NSDate date]]];
+            // 生产图片url
+            AVFile *file = [AVFile fileWithName:[NSString stringWithFormat:@"%@", self.topic.objectId] contentsAtPath:self.totalPath];
+            [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    [weakPublishVC.imgURLArray addObject:file.url];
+                    if (weakPublishVC.imgURLArray.count == imagesArray.count) {
+                        // 图片url数组中的url数量和图片数量相等时，开始block传值
+                        block(weakPublishVC.imgURLArray);
+                    }
                 }
-            }
-        }];
+            }];
+        }
     }
+
 }
 
 #pragma mark -- 保存要发布的图片到该程序的沙盒内 --
@@ -321,14 +332,14 @@
     // 点击发表按钮时，先判断登录状态，如果处于已经登录，则直接发表。如果还没有登录，则跳转到登录页面。
     // 判断当前用户登陆状态
     if ([AVUser currentUser] && [[AVUser currentUser][@"loginState"] boolValue] == YES) {
-        
-        [self saveImagesArray:_imagesArray saveImagesblock:^(NSArray *imgURLArray) {
             
-            // 创建存储对象
-            AVObject *topic = [AVObject objectWithClassName:@"Topic"];
-            // 如果当前用户处于登陆状态
-            // 存储帖子内容到服务器
-            
+            [self saveImagesArray:_imagesArray saveImagesblock:^(NSArray *imgURLArray) {
+                
+                // 创建存储对象
+                AVObject *topic = [AVObject objectWithClassName:@"Topic"];
+                // 如果当前用户处于登陆状态
+                // 存储帖子内容到服务器
+                
                 [topic setObject:weakPublishVC.textView.text forKey:@"text"]; // 帖子的文字内容
                 [topic setObject:weakPublishVC.topicTitle forKey:@"type"]; // 帖子的类型
                 [topic setObject:[NSNumber numberWithInt:0] forKey:@"commentCount"]; // 帖子的评论人数
@@ -341,35 +352,33 @@
                 // 将帖子图片url数组存储到服务器
                 // 获取存放照片url的数组
                 [topic setObject:imgURLArray forKey:@"images"];
-                NSLog(@"-----11----%@", _imgURLArray);
                 
                 // 存储当前作者的头像的url
-            [topic setObject:[AVUser currentUser][@"avatar"] forKey:@"avatar"];
-            NSLog(@"------18------%@", topic[@"avatar"]);
-            weakPublishVC.topic = topic;
-            
-            // 存储到服务器
-            [topic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    
-                    // 存储成功后结束缓冲进度条
-                    [MBProgressHUD hideHUDForView:weakPublishVC.view animated:YES];
-                    
-                    // 存储成功
-                    NSLog(@"存储成功");
-                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"发表成功!" preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [weakPublishVC dismissViewControllerAnimated:YES completion:nil];
-                    }];
-                    [alertController addAction:okAction];
-                    [weakPublishVC presentViewController:alertController animated:YES completion:nil];
-                } else {
-                    // 存储失败
-                    NSLog(@"存储失败, 错误代码%@", error);
-                }
+                [topic setObject:[AVUser currentUser][@"avatar"] forKey:@"avatar"];
+                weakPublishVC.topic = topic;
+                
+                // 存储到服务器
+                [topic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (succeeded) {
+                        
+                        // 存储成功后结束缓冲进度条
+                        [MBProgressHUD hideHUDForView:weakPublishVC.view animated:YES];
+                        
+                        // 存储成功
+                        NSLog(@"存储成功");
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"发表成功!" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            [weakPublishVC dismissViewControllerAnimated:YES completion:nil];
+                        }];
+                        [alertController addAction:okAction];
+                        [weakPublishVC presentViewController:alertController animated:YES completion:nil];
+                    } else {
+                        // 存储失败
+                        NSLog(@"存储失败, 错误代码%@", error);
+                    }
+                }];
             }];
-        }];
-     
+        
     } else {
         // 如果没有用户登陆，即currentUser为空，则跳转到登陆页面
         LoginViewController *loginVC = [LoginViewController new];

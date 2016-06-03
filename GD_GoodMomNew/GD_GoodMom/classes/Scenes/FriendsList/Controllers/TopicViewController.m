@@ -12,8 +12,14 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import <MJRefresh.h>
 #import "MBProgressHUD+gifHUD.h"
-#import "TopicCommentViewController.h"
+#import "TopicCommentListViewController.h"
+#import <UMSocial.h>
 
+// tableView.ContentView内边距
+// 显示内容区域距离屏幕顶部偏移量
+#define kTopOffset 50
+// 显示内容区域距离屏幕底部偏移量
+#define kBottomOffset 105
 
 @interface TopicViewController ()
 
@@ -39,13 +45,16 @@ static NSString *const topicCellID = @"topicCell";
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    // 从帖子评论页回到该页面时，显示tabbar
+    self.tabBarController.tabBar.hidden = NO;
+
+}
+
 #pragma mark -- 初始化表格 --
 - (void)setupTableView {
     
-    // 减掉遮挡内容显示全部在scrollView上的信息
-    CGFloat topOffset = 45; // 显示内容区域距离屏幕顶部偏移量
-    CGFloat bottomOffset = 100; // 显示内容区域距离屏幕底部偏移量
-    self.tableView.contentInset = UIEdgeInsetsMake(topOffset, 0, bottomOffset, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(kTopOffset, 0, kBottomOffset, 0);
     // 设置滚动条内边距
     self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
     // 取消系统自带的分割线
@@ -55,6 +64,14 @@ static NSString *const topicCellID = @"topicCell";
     
     // 注册topicCell
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TopicCell class]) bundle:nil] forCellReuseIdentifier:topicCellID];
+    
+    // 使用通知中心，当评论改变时，自动刷新该页面
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateComments) name:@"updateComments" object:nil];
+}
+
+#pragma mark -- 使用通知中心，当评论改变时，自动刷新该页面 --
+- (void)updateComments {
+    [self setupRefresh];
 }
 
 #pragma mark -- 下拉刷新、上拉加载 --
@@ -93,6 +110,7 @@ static NSString *const topicCellID = @"topicCell";
     AVQuery *queryTopic = [AVQuery queryWithClassName:@"Topic"];
     // 按照帖子发布时间排序(降序），让最新发布的帖子排在上面
     [queryTopic orderByDescending:@"createdAt"];
+    
     // 根据帖子类型去查询该类型下的帖子
     [queryTopic whereKey:@"type" equalTo:self.title];
     [queryTopic findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -102,6 +120,8 @@ static NSString *const topicCellID = @"topicCell";
             Topic *topic = [Topic new];
             [topic setValuesForKeysWithDictionary:[avObj objectForKey:@"localData"]];
             [topic setValue:avObj.createdAt forKey:@"creatAt"]; // 发帖时间
+            topic.objectId = avObj.objectId; // 帖子id
+            [topic setValue:avObj[@"commentCount"] forKey:@"commentCount"]; // 评论数量
             [self.topicsArray addObject:topic];
         }
         // 回到主线程，刷新列表
@@ -152,14 +172,16 @@ static NSString *const topicCellID = @"topicCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    TopicCommentViewController *topicCommentVC = [TopicCommentViewController new];
+  
+    TopicCommentListViewController *topicCommentVC = [TopicCommentListViewController new];
     topicCommentVC.topic = self.topicsArray[indexPath.row];
     // 将cell的高度传递给下个页面
     topicCommentVC.cellHeight = self.cellHeight;
     // 点击cell时，跳转到评论页面
     [self.navigationController pushViewController:topicCommentVC animated:YES];
+    
 }
+
 
 
 @end
