@@ -11,8 +11,7 @@
 #import <SVProgressHUD.h>
 #import "TTConst.h"
 #import "AboutViewController.h"
-#import "PersonalInformationViewController.h"
-#import <AVOSCloud/AVOSCloud.h>
+
 @interface MeTableViewController ()
 
 @property (nonatomic, copy) NSString *userName;
@@ -39,7 +38,6 @@ CGFloat const footViewHeight = 30;
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    //通知中心
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSkinModel) name:SkinModelDidChangedNotification object:nil];
     [self updateSkinModel];
 }
@@ -132,19 +130,23 @@ CGFloat const footViewHeight = 30;
         
         UIImageView *avatarImageView = [[UIImageView alloc] init];
         avatarImageView.frame =CGRectMake(margin, margin, cellHeight - 2*margin, cellHeight - 2*margin);
-        AVFile *avatarFile = [AVFile fileWithURL:[AVUser currentUser][@"avatar"]];
-        // 获取头像的缩略图
-        [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
-            avatarImageView.image = image;
-        }];
+        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"headerImage"];
+        UIImage *image = [UIImage imageWithContentsOfFile:path];
+        if (image == nil) {
+            image = [UIImage imageNamed:@"woman"];
+            [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+        }
+        avatarImageView.image = image;
         avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width * 0.5;
         avatarImageView.layer.masksToBounds = YES;
         [cell addSubview:avatarImageView];
+        
         UILabel *nameLabel = [[UILabel alloc] init];
         self.nameLabel  = nameLabel;
         //属性传值
         self.nameLabel.text  = self.content;
         CGFloat nameLabelHeight = 21.5;
+
         nameLabel.font = [UIFont systemFontOfSize:18];
         if ([self.currentSkinModel isEqualToString:DaySkinModelValue]) {//日间模式
             nameLabel.textColor = [UIColor blackColor];
@@ -175,6 +177,7 @@ CGFloat const footViewHeight = 30;
                     UISwitch *changeSkinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 51, 31)];
                     self.changeSkinSwitch = changeSkinSwitch;
                     [changeSkinSwitch addTarget:self action:@selector(switchDidChange:) forControlEvents:UIControlEventValueChanged];
+
                     cell.accessoryView = changeSkinSwitch;
                 }
         }
@@ -182,6 +185,7 @@ CGFloat const footViewHeight = 30;
                 cell.textLabel.text = @"清除缓存";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f MB",self.cacheSize];
             }
+
         } else if (indexPath.section == 2) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = @"反馈";
@@ -190,6 +194,7 @@ CGFloat const footViewHeight = 30;
                 cell.textLabel.text = @"关于";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
+        
     }
     
     if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {//夜间模式
@@ -203,7 +208,10 @@ CGFloat const footViewHeight = 30;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         self.changeSkinSwitch.on = NO;
     }
+    
+    
     return cell;
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -214,17 +222,16 @@ CGFloat const footViewHeight = 30;
         [SVProgressHUD showSuccessWithStatus:@"缓存清除完毕!"];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"0.0MB"];
+
     }else if (indexPath.section == 2 && indexPath.row == 1){
+    
         AboutViewController *aboutVC  = [AboutViewController new];
         [self.navigationController pushViewController:aboutVC animated:YES];
-    }else if (indexPath.section == 0 && indexPath.row == 0){
-        
-        PersonalInformationViewController *personalVC = [PersonalInformationViewController new];
-        personalVC.content = self.nameLabel.text;
-        
-        [self.navigationController pushViewController:personalVC animated:YES];
-        
+    
     }
+    
+    
+    
 }
 
 -(void)switchDidChange:(UISwitch *)theSwitch {
@@ -238,7 +245,6 @@ CGFloat const footViewHeight = 30;
         [[NSNotificationCenter defaultCenter] postNotificationName:SkinModelDidChangedNotification object:self];
     }
 }
-
 
 
 
