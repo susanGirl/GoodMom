@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIView *contentVIew;
 @property (nonatomic, copy) NSArray *items;
 @property(nonatomic,strong)NSString *currentSkinModel;//当前皮肤模式
+@property(nonatomic,strong) UIBarButtonItem *cancelButton;
+
 @end
 
 @implementation UserViewController
@@ -44,13 +46,11 @@
         _userNameLabel.text = [FileHandle getUserInfo].userName;
         
     }else{
-        
         title = @"登录";
         _userNameLabel.text = @"未登录";
-        
     }
-    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+    self.cancelButton = cancelButton;
     self.navigationItem.rightBarButtonItem = cancelButton;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     
@@ -73,14 +73,12 @@
 
 #pragma mark--private Method ----更新皮肤模式，接到模式切换的通知后会调用此方法
 -(void)updateSkinModel{
-
     self.currentSkinModel = [[NSUserDefaults standardUserDefaults]stringForKey:CurrentSkinModelKey];
     if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {
         self.tableView.backgroundColor = [UIColor blackColor];
         self.contentVIew.backgroundColor = [UIColor grayColor];
     self.navigationController.navigationBar.barTintColor = [UIColor darkGrayColor];
     }else{
-   
         self.tableView.backgroundColor = [UIColor whiteColor];
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.contentVIew.backgroundColor = [UIColor whiteColor];
@@ -95,13 +93,11 @@
     __weak UserViewController *userVC = self;
     
     if ([barButton.title isEqualToString:@"注销"]) {
-        
         // 移除本地存储的用户信息
         [FileHandle removeUserInfo];
         _userNameLabel.text = @"未登录";
         // 设置当前用户登录状态为未登录
         [[AVUser currentUser] setObject:[NSNumber numberWithBool:NO] forKey:@"loginState"];
-    
         // 存储到服务器
         [[AVUser currentUser] saveInBackground];
         barButton.title = @"登录";
@@ -110,7 +106,6 @@
     else{
         
         LoginViewController *loginVC = [LoginViewController new];
-        
         // 接收登录页面传过来的用户信息
         loginVC.block = ^(User *user) {
             _userNameLabel.text = user.userName;
@@ -133,12 +128,11 @@
  * 点击头视图执行此方法
  */
 - (IBAction)tapHeaderVIew:(id)sender {
-
-    LoginViewController *logVC = [LoginViewController new];
+    if ([self.cancelButton.title isEqualToString:@"登录"]) {
+         LoginViewController *logVC = [LoginViewController new];
     [self presentViewController:logVC animated:YES completion:nil];
-    
+    }
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -147,36 +141,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
     return _items.count;
 }
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     cell.textLabel.text = _items[indexPath.row];
-    
-    
-//    if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {//夜间模式
-//        cell.backgroundColor = [UIColor colorWithRed:35/255.0 green:32/255.0 blue:36/255.0 alpha:1.0];
-//        cell.textLabel.textColor =  [UIColor colorWithRed:111/255.0 green:109/255.0 blue:112/255.0 alpha:1.0];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//     
-//    } else {//夜间模式
-//        cell.backgroundColor =[UIColor whiteColor];
-//        cell.textLabel.textColor = [UIColor blackColor];
-//        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-//   
-//    }
-
     return cell;
 }
 
@@ -186,24 +162,15 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if (indexPath.row == 2) {
-    
         pregnancyViewController *preVC = [pregnancyViewController new];
         [self.navigationController pushViewController:preVC animated:YES];
-        
-        
     }
-    
-    if (indexPath.row == 3) {
+    if (indexPath.row == 3){
       MeTableViewController *meVC = [MeTableViewController new];
         meVC.content = self.userNameLabel.text;
         [self.navigationController pushViewController:meVC animated:YES];
     }
-
-    
-    
-    
 }
 
 /*
