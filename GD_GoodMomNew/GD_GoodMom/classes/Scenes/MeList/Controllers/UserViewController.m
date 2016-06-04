@@ -22,12 +22,11 @@
 @property (weak, nonatomic) IBOutlet UIView *contentVIew;
 @property (nonatomic, copy) NSArray *items;
 @property(nonatomic,strong)NSString *currentSkinModel;//当前皮肤模式
-<<<<<<< HEAD
+
 @property(nonatomic,strong) UIBarButtonItem *cancelButton;
 @property(nonatomic,strong)UITableViewCell *cell;
 
-=======
->>>>>>> 2953117c6d9074e7744952e818a77235121376e1
+
 @end
 
 @implementation UserViewController
@@ -82,12 +81,11 @@
         self.cell.textLabel.textColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor darkGrayColor];
     }else{
-<<<<<<< HEAD
+
 //        self.tableView.backgroundColor = [UIColor whiteColor];
-=======
+
    
         self.tableView.backgroundColor = [UIColor whiteColor];
->>>>>>> 2953117c6d9074e7744952e818a77235121376e1
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.userNameLabel.textColor = [UIColor blackColor];
         self.contentVIew.backgroundColor = [UIColor whiteColor];
