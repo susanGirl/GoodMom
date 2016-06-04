@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface MakeUpCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UIImageView *imgView_1;
+@property (weak, nonatomic) IBOutlet UIImageView *imgView_2;
+@property (weak, nonatomic) IBOutlet UIImageView *imgView_3;
+- (void)name:(NSString *)name_1 name:(NSString *)name_2 name:(NSString *)name_3;
 @end
