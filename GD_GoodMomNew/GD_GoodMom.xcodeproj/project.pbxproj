@@ -190,6 +190,8 @@
 		C23D911C1CFD91F900B691A8 /* WMProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = C23D91151CFD91F900B691A8 /* WMProgressView.m */; };
 		C23D911D1CFD91F900B691A8 /* WMPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = C23D91181CFD91F900B691A8 /* WMPageController.m */; };
 		C247BC0D1CFF356A00FBD5C9 /* HRScorollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C247BC0C1CFF356A00FBD5C9 /* HRScorollView.m */; };
+		C25DE01E1D026222007E562E /* KnowledgeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE01B1D026222007E562E /* KnowledgeModel.m */; };
+		C25DE01F1D026222007E562E /* KnowTitleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE01D1D026222007E562E /* KnowTitleModel.m */; };
 		C27A5B4B1CF7E505003173D6 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C27A5B4A1CF7E505003173D6 /* UIView+Extension.m */; };
 		C2B6174D1CF5CD070087CE72 /* SkinMode.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B6174C1CF5CD070087CE72 /* SkinMode.m */; };
 		C2CB9E731CF4372D003CD4E9 /* MeListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CB9E711CF4372D003CD4E9 /* MeListCell.m */; };
@@ -207,7 +209,6 @@
 		C2D22E1F1CF73123002F1F36 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D22E1D1CF73123002F1F36 /* AboutViewController.xib */; };
 		C2D22E221CF738F3002F1F36 /* imageNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E211CF738F3002F1F36 /* imageNetWork.m */; };
 		C2DF6B011D0065E000537853 /* KnowledgeController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DF6B001D0065E000537853 /* KnowledgeController.m */; };
-		C2DF6B041D006BB100537853 /* KnoeledgeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DF6B031D006BB100537853 /* KnoeledgeModel.m */; };
 		C2F008511CF57ABE00AD0244 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F008501CF57ABE00AD0244 /* FileHandle.m */; };
 		C2F008551CF57EA500AD0244 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F008531CF57EA500AD0244 /* UserViewController.m */; };
 		C2F008561CF57EA500AD0244 /* UserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F008541CF57EA500AD0244 /* UserViewController.xib */; };
@@ -476,6 +477,10 @@
 		C23D91181CFD91F900B691A8 /* WMPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPageController.m; sourceTree = "<group>"; };
 		C247BC0B1CFF356A00FBD5C9 /* HRScorollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRScorollView.h; sourceTree = "<group>"; };
 		C247BC0C1CFF356A00FBD5C9 /* HRScorollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRScorollView.m; sourceTree = "<group>"; };
+		C25DE01A1D026222007E562E /* KnowledgeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeModel.h; sourceTree = "<group>"; };
+		C25DE01B1D026222007E562E /* KnowledgeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowledgeModel.m; sourceTree = "<group>"; };
+		C25DE01C1D026222007E562E /* KnowTitleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowTitleModel.h; sourceTree = "<group>"; };
+		C25DE01D1D026222007E562E /* KnowTitleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowTitleModel.m; sourceTree = "<group>"; };
 		C27A5B491CF7E505003173D6 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		C27A5B4A1CF7E505003173D6 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		C2B6174B1CF5CD070087CE72 /* SkinMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinMode.h; sourceTree = "<group>"; };
@@ -504,8 +509,6 @@
 		C2D22E211CF738F3002F1F36 /* imageNetWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = imageNetWork.m; sourceTree = "<group>"; };
 		C2DF6AFF1D0065E000537853 /* KnowledgeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeController.h; sourceTree = "<group>"; };
 		C2DF6B001D0065E000537853 /* KnowledgeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowledgeController.m; sourceTree = "<group>"; };
-		C2DF6B021D006BB100537853 /* KnoeledgeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnoeledgeModel.h; sourceTree = "<group>"; };
-		C2DF6B031D006BB100537853 /* KnoeledgeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnoeledgeModel.m; sourceTree = "<group>"; };
 		C2F0084F1CF57ABE00AD0244 /* FileHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandle.h; sourceTree = "<group>"; };
 		C2F008501CF57ABE00AD0244 /* FileHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHandle.m; sourceTree = "<group>"; };
 		C2F008521CF57EA500AD0244 /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
@@ -877,6 +880,10 @@
 		C21B967C1CFD6E23001E6A17 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C25DE01A1D026222007E562E /* KnowledgeModel.h */,
+				C25DE01B1D026222007E562E /* KnowledgeModel.m */,
+				C25DE01C1D026222007E562E /* KnowTitleModel.h */,
+				C25DE01D1D026222007E562E /* KnowTitleModel.m */,
 				C21B967D1CFD6E23001E6A17 /* detailModel.h */,
 				C21B967E1CFD6E23001E6A17 /* detailModel.m */,
 				C21B967F1CFD6E23001E6A17 /* NoteModel.h */,
@@ -885,8 +892,6 @@
 				C21B96821CFD6E23001E6A17 /* StoryModel.m */,
 				C21B96831CFD6E23001E6A17 /* ToolModel.h */,
 				C21B96841CFD6E23001E6A17 /* ToolModel.m */,
-				C2DF6B021D006BB100537853 /* KnoeledgeModel.h */,
-				C2DF6B031D006BB100537853 /* KnoeledgeModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1602,7 +1607,6 @@
 				C20703E21CFBE6AC00AE9D43 /* DatabaseManager.m in Sources */,
 				C21B969D1CFD6E23001E6A17 /* ToolModel.m in Sources */,
 				C21B971B1CFDD13B001E6A17 /* MyView.m in Sources */,
-				C2DF6B041D006BB100537853 /* KnoeledgeModel.m in Sources */,
 				DEC2EFE11CFC6E470020529A /* TopicCommentViewController.m in Sources */,
 				DEC2EFE91CFC6F970020529A /* Topic.m in Sources */,
 				C23D90D91CFD8C3B00B691A8 /* CellType_4.m in Sources */,
@@ -1612,12 +1616,14 @@
 				C23D90E11CFD8C3B00B691A8 /* HomePageViewController.m in Sources */,
 				C23D90CA1CFD8C3B00B691A8 /* ChildClothesViewController.m in Sources */,
 				C21B96A01CFD6E23001E6A17 /* StoryCell.m in Sources */,
+				C25DE01E1D026222007E562E /* KnowledgeModel.m in Sources */,
 				C2F008511CF57ABE00AD0244 /* FileHandle.m in Sources */,
 				C23D90CD1CFD8C3B00B691A8 /* HomeModel.m in Sources */,
 				DEC2F0071CFC7E650020529A /* User.m in Sources */,
 				C23D911C1CFD91F900B691A8 /* WMProgressView.m in Sources */,
 				C21B969C1CFD6E23001E6A17 /* StoryModel.m in Sources */,
 				C27A5B4B1CF7E505003173D6 /* UIView+Extension.m in Sources */,
+				C25DE01F1D026222007E562E /* KnowTitleModel.m in Sources */,
 				C23D90D21CFD8C3B00B691A8 /* Pic.m in Sources */,
 				C23D90CE1CFD8C3B00B691A8 /* Image_index.m in Sources */,
 				C212D39E1CFF0DEB00CE34B4 /* PersonalInformationCell.m in Sources */,
