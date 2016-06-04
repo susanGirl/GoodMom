@@ -7,14 +7,12 @@
 //
 
 #import "TopicCell.h"
-#import "TopicCommentListViewController.h"
-#import "NSDate+HFExtension.h"
 
 // 间距
 #define kCellMargin 5
 // 帖子图片视图背景视图
 #define kImgBackgroundViewW self.contentView.width
-#define kImgBackgroundViewH kImgBackgroundViewW
+#define kImgBackgroundViewH (kImgBackgroundViewW * 3 / 4)
 
 @interface TopicCell ()
 
@@ -62,89 +60,91 @@
         _topic = nil;
         _topic = topic;
         
-        
         // 设置用户头像
         AVFile *file = [AVFile fileWithURL:self.topic.avatar];
         NSData *avatarData = [file getData];
         UIImage *avatarImage = [UIImage imageWithData:avatarData];
         self.avatarImageView.image = avatarImage;
         
-        
         // 设置用户昵称
         self.usernameLabel.text = self.topic.username;
         
         // 设置发帖时间
-        /**
-         *  日期的最终显示格式
-         *今年
-         *  今天
-         *      1分钟内：刚刚
-         *      1小时内：xx分钟前
-         *      其他：xx小时前
-         *  昨天：昨天 18：56：35
-         *非今年：2015-04-05 18：45：34
-         */
-        // 日期格式化类
-        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-        // 设置日期格式
-        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        if (self.topic.creatAt.isThisYear) {
-            // 今年
-            if (self.topic.creatAt.isToday) {
-                // 今天
-                NSDateComponents *cmps = [[NSDate date] deltaFrom:self.topic.creatAt];
-                if (cmps.hour >= 1) {
-                    // 时间差距 >= 1小时
-                    self.createdAtLabel.text = [NSString stringWithFormat:@"%ld小时前", cmps.hour];
-                }else if (cmps.minute >= 1) {
-                    // 1小时 > 时间差距 >= 1分钟
-                    self.createdAtLabel.text = [NSString stringWithFormat:@"%ld分钟前", cmps.minute];
-                }else {
-                    // 1分钟 > 时间差距
-                    self.createdAtLabel.text = @"刚刚";
-                }
-            } else if (self.topic.creatAt.isYesterday) {
-                // 昨天
-                fmt.dateFormat = @"昨天 HH:mm:ss";
-                self.createdAtLabel.text = [fmt stringFromDate:self.topic.creatAt];
-            } else {
-                // 其他
-                fmt.dateFormat = @"MM-dd HH:mm:ss";
-                self.createdAtLabel.text = [fmt stringFromDate:self.topic.creatAt];
-            }
-        }else {
-            // 非今年
-            self.createdAtLabel.text = [NSString stringWithFormat:@"%@", self.topic.creatAt];
-        }
-        
+        NSDateFormatter *dateformatter = [NSDateFormatter new];
+        NSTimeZone *timeZone = [NSTimeZone localTimeZone];
+        [dateformatter setTimeZone:timeZone];
+        [dateformatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *createAtString =  [dateformatter stringFromDate:self.topic.creatAt];
+        self.createdAtLabel.text = createAtString;
         
         // 帖子文字内容
         self.topicTextLabel.text = topic.text;
         
         // 帖子图片内容
         NSLog(@"%@", self.topic.images);
-
+        
+        // 有效图片数量
+        __block NSInteger imagesCount = 0;
+        
         for (int i = 0; i < self.topic.images.count; i++) {
             AVFile *imgFile = [AVFile fileWithURL:self.topic.images[i]];
-            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                UIImage *img = [UIImage imageWithData:data];
-                UIImageView *imgView = [[UIImageView alloc] init];
-                imgView.frame = CGRectMake(0, i * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
-                imgView.image = img;
-                [self.imgBackgroundView addSubview:imgView];
+            
+            [imgFile getThumbnail:YES width:self.imgBackgroundView.width height:kImgBackgroundViewH withBlock:^(UIImage *image, NSError *error) {
                 
-            } progressBlock:^(NSInteger percentDone) {
+                if (image) {
+                    UIImageView *imgView = [[UIImageView alloc] init];
+                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+                    imgView.image = image;
+                    [self.imgBackgroundView addSubview:imgView];
+                    
+                    // 有效图片加“1”
+                    imagesCount += 1;
+                    
+                    self.imagesCount = imagesCount;
+                }
                 
             }];
+            
+            
+            // ============ 另外一种获取图片的方法 =============
+            //            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            //                UIImage *img = [UIImage imageWithData:data];
+            //
+            //                if (img) {
+            //                    UIImageView *imgView = [[UIImageView alloc] init];
+            //                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+            //                    imgView.image = img;
+            //                    [self.imgBackgroundView addSubview:imgView];
+            //
+            //                    // 有效图片加“1”
+            //                    imagesCount += 1;
+            //
+            //                    self.imagesCount = imagesCount;
+            //                }
+            //                
+            //            } progressBlock:^(NSInteger percentDone) {
+            //                
+            //            }];
+            // ================================
         }
 
         // 设置收藏帖子的人数
         [self setupButtonTitle:self.collectionButton count:self.topic.collectionCount placeholder:@"收藏"];
         // 设置评论帖子的人数
         [self setupButtonTitle:self.commentButton count:self.topic.commentCount placeholder:@"评论"];
-        
         // 宝宝性别
         self.babyGenderLabel.text = self.topic.babyGender;
+#warning 计算宝宝年龄
+        // 宝宝年龄
+//        NSDate *currentDate = [NSDate date];
+//        NSDateFormatter *fmt = [NSDateFormatter new];
+//        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+//        NSString *babyBirthday = self.topic.user.babyBirthday;
+        // 当前时间 - 宝贝出生日期 = 宝宝年龄
+        NSDate *babyBirthday = self.topic.babyBirthday;
+        NSString *dateString = [dateformatter stringFromDate:babyBirthday];
+        self.babyBirthdayLabel.text = dateString;
+
     }
 }
 
@@ -177,17 +177,17 @@
     // 文本Y坐标
     self.topicTextLabel.y = CGRectGetMaxY(self.avatarImageView.frame) + kCellMargin;
     // 文本高度
-    CGSize maxSize = CGSizeMake(kScreenW - 2 * kCellMargin , 10000);
+    CGSize maxSize = CGSizeMake([UIScreen mainScreen].bounds.size.width - 2 * kCellMargin , 10000);
     // 计算文本的高度
-    CGFloat textH = [self.topic.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]} context:nil].size.height;
+    CGFloat textH = [self.topic.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]} context:nil].size.height;
     self.topicTextLabel.height = textH;
     
     // -- 图片位置尺寸 --
     self.imgBackgroundView.y = self.topicTextLabel.y + self.topicTextLabel.height + kCellMargin;
-    self.imgBackgroundView.height = kImgBackgroundViewH * self.topic.images.count;
+    self.imgBackgroundView.height = kImgBackgroundViewH * self.imagesCount;
     
     // -- 底部控件底部视图位置尺寸 --
-    self.bottomToolView.y = self.imgBackgroundView.y + self.imgBackgroundView.height + kCellMargin;
+    self.bottomToolView.y = CGRectGetMaxY(self.imgBackgroundView.frame) + kCellMargin;
     
 }
 
@@ -195,7 +195,7 @@
 - (CGFloat)calculateCellHeight {
 
     // cell的高度（包含文字时）
-    return self.self.imgBackgroundView.y + self.imgBackgroundView.height + 30 + kCellMargin;
+    return self.bottomToolView.y + 30 + kCellMargin;
     
 }
 
@@ -265,8 +265,6 @@
 }
 #pragma mark -- 评论帖子 --
 - (IBAction)commentTopicAction:(id)sender {
- 
-    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

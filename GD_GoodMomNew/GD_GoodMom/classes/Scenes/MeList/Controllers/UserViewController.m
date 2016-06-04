@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.items = @[@"我的关注",  @"我的收藏",@"怀孕周期", @"设置"];
     self.navigationItem.title = @"我的页面";
     self.navigationController.navigationBar.backgroundColor = [UIColor magentaColor];
@@ -42,6 +42,7 @@
         // 如果处于登录状态则将按钮标题改为“注销”
         title = @"注销";
         _userNameLabel.text = [FileHandle getUserInfo].userName;
+        //        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",USER_AVATAR_LOCAL_URL,[FileHandle getUserInfo].avatar]]];
         
     }else{
         
@@ -53,14 +54,6 @@
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    
-    if ([AVUser currentUser] && [cancelButton.title isEqualToString:@"注销"]) {
-        AVFile *avatarFile = [AVFile fileWithURL:[AVUser currentUser][@"avatar"]];
-        // 获取头像的缩略图
-        [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
-            _avatarImageView.image = image;
-        }];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,11 +94,10 @@
         _userNameLabel.text = @"未登录";
         // 设置当前用户登录状态为未登录
         [[AVUser currentUser] setObject:[NSNumber numberWithBool:NO] forKey:@"loginState"];
-    
         // 存储到服务器
         [[AVUser currentUser] saveInBackground];
         barButton.title = @"登录";
-        _avatarImageView.image = [UIImage imageNamed:@"woman.png"];
+        _avatarImageView.image = [UIImage imageNamed:@"DefaultAvatar"];
     }
     else{
         
@@ -115,14 +107,14 @@
         loginVC.block = ^(User *user) {
             _userNameLabel.text = user.userName;
             barButton.title = @"注销";
-            AVFile *avatarFile = [AVFile fileWithURL:[AVUser currentUser][@"avatar"]];
+            AVFile *avatarFile = [AVFile fileWithURL:user.avatar];
             // 获取头像的缩略图
             [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
                 _avatarImageView.image = image;
             }];
             
             if (_avatarImageView.image == nil) {
-                _avatarImageView.image = [UIImage imageNamed:@"woman.png"];
+                _avatarImageView.image = [UIImage imageNamed:@"DefaultAvatar"];
             }
         };
         [userVC presentViewController:loginVC animated:YES completion:nil];
