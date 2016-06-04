@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSArray *items;
 @property(nonatomic,strong)NSString *currentSkinModel;//当前皮肤模式
 @property(nonatomic,strong) UIBarButtonItem *cancelButton;
+@property(nonatomic,strong)UITableViewCell *cell;
 
 @end
 
@@ -67,21 +68,27 @@
 {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateSkinModel) name:SkinModelDidChangedNotification  object:nil];
-    [self updateSkinModel];
 
+    [self updateSkinModel];
 }
 
 #pragma mark--private Method ----更新皮肤模式，接到模式切换的通知后会调用此方法
 -(void)updateSkinModel{
     self.currentSkinModel = [[NSUserDefaults standardUserDefaults]stringForKey:CurrentSkinModelKey];
     if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {
-        self.tableView.backgroundColor = [UIColor blackColor];
-        self.contentVIew.backgroundColor = [UIColor grayColor];
+//        self.tableView.backgroundColor = [UIColor blackColor];
+        self.contentVIew.backgroundColor = [UIColor blackColor];
+        self.userNameLabel.textColor = [UIColor whiteColor];
+        self.cell.backgroundColor = [UIColor grayColor];
+        self.cell.textLabel.textColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor darkGrayColor];
     }else{
-        self.tableView.backgroundColor = [UIColor whiteColor];
+//        self.tableView.backgroundColor = [UIColor whiteColor];
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+        self.userNameLabel.textColor = [UIColor blackColor];
         self.contentVIew.backgroundColor = [UIColor whiteColor];
+        self.cell.backgroundColor = [UIColor whiteColor];
+        self.cell.textLabel.textColor = [UIColor blackColor];
     }
 }
 /**
@@ -149,6 +156,7 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    self.cell = cell;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }

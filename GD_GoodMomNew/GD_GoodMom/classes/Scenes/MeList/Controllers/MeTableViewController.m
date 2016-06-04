@@ -70,8 +70,6 @@ CGFloat const footViewHeight = 30;
     self.cacheSize = imageCache + sqliteCache;
 }
 
-#pragma mark - Table view data source
-
 #pragma mark -UITableViewDataSource 返回tableView有多少组
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
