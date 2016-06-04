@@ -15,5 +15,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgView_3;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView_4;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView_5;
-
+@property(strong,nonatomic)UIPageControl  *pageControl;
 @end

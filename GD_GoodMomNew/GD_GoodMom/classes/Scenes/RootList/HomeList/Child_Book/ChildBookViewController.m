@@ -14,6 +14,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property(strong,nonatomic)NSString  *cellTitle;
+@property(strong,nonatomic)NSTimer  *timer;
+@property(assign,nonatomic)NSInteger  number;
+
 @end
 
 static NSString * const bookCellId = @"bookCellidentifier";
@@ -64,6 +67,7 @@ static NSString * const bookCellId = @"bookCellidentifier";
     }
     return cell;
 }
+
 - (UITableViewCell *)bookCell:(BookCell *)cell title:(NSString *)title name:(NSString *)name_1 name:(NSString *)name_2 name:(NSString *)name_3 name:(NSString *)name_4 name:(NSString *)name_5{
     cell.cellScrollView.contentSize = CGSizeMake(cell.imgView_1.frame.size.width*5+40, cell.imgView_1.frame.size.height);
     cell.cellScrollView.pagingEnabled = YES;
@@ -75,8 +79,44 @@ static NSString * const bookCellId = @"bookCellidentifier";
     cell.imgView_3.image = [UIImage imageNamed:name_3];
     cell.imgView_4.image = [UIImage imageNamed:name_4];
     cell.imgView_5.image = [UIImage imageNamed:name_5];
+//    [self starTimer:self cell:cell];
     return cell;
 }
+
+//- (void)starTimer:(UIViewController *)viewVC cell:(BookCell *)cell{
+//    
+//    cell.cellScrollView.contentSize = CGSizeMake(cell.imgView_1.frame.size.width*5+40, cell.cellScrollView.frame.size.height);
+//    cell.cellScrollView.delegate = self;
+//    cell.pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, 5 * 15, 50)];
+//    cell.pageControl.center = CGPointMake(cell.cellScrollView.center.x, CGRectGetMaxY(cell.cellScrollView.frame)-25);
+//    cell.pageControl.numberOfPages = 5;
+//    // 选中的颜色
+//    cell.pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:241/255.0 green:158/255.0 blue:194/255.0 alpha:1];
+//    // 未选中的颜色
+//    cell.pageControl.pageIndicatorTintColor = [UIColor redColor];
+//    [cell.cellScrollView addSubview:cell.pageControl];///////
+//    [cell.pageControl addTarget:self action:@selector(pageControlAction:cell:) forControlEvents:UIControlEventValueChanged];
+//    self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:viewVC selector:@selector(timerAction:) userInfo:nil repeats:YES];
+//}
+//- (void)timerAction:(BookCell *)cell{
+//    _number = cell.pageControl.currentPage;
+//    _number++;
+//    if (_number == 5) {
+//        _number = 0;
+//    }
+//    cell.pageControl.currentPage = _number;
+//    [cell.cellScrollView setContentOffset:CGPointMake(cell.pageControl.currentPage*(cell.imgView_1.frame.size.width+8), 0) animated:YES];
+//    
+//}
+//- (void)pageControlAction:(UIPageControl *)pageControl cell:(BookCell *)cell{
+//    
+//    cell.cellScrollView.contentOffset = CGPointMake(pageControl.currentPage * (cell.imgView_1.frame.size.width+8),0);
+//    
+//}
+
+
+
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 180;
 }

@@ -155,8 +155,6 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
             [yunVC reloadAllData];
         });
     }];
-    
-    
 }
 - (void)drawView{
     
@@ -253,67 +251,37 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
+- (void)url:(NSString *)url{
+
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = url;
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            WebViewController *webViewVC = [WebViewController new];
-            
-            webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-            
-            webViewVC.webViewUrl = @"https://baidu.com";//@"http://m.mia.com/special/module/index/4091/app/";
-            
-            [self.navigationController pushViewController:webViewVC animated:YES];
-    
+            [self url:@"http://www.mia.com/search/s?k=%E9%98%B2%E6%99%92"];
         }else if (indexPath.row == 1){
             
-            WebViewController *webViewVC = [WebViewController new];
-            
-            webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-            
-//            webViewVC.webViewUrl = @"http://m.mia.com/special/module/index/5010/app/";//@"http://www.mia.com/search/s?k=%E5%A5%B6%E7%93%B6";
-            webViewVC.webViewUrl = @"https://s.taobao.com/search?q=%E5%A5%B6%E7%93%B6&imgfile=&commend=all&ssid=s5-e&search_type=item&sourceId=tb.index&spm=a21bo.50862.201856-taobao-item.1&ie=utf8&initiative_id=tbindexz_20160601";
-            
-            [self.navigationController pushViewController:webViewVC animated:YES];
+            [self url:@"http://www.mia.com/search/s?k=%E5%A5%B6%E7%93%B6"];
         }else{
-        
             
-            WebViewController *webViewVC = [WebViewController new];
-            
-            webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-            
-            webViewVC.webViewUrl = @"http://m.mia.com/special/module/index/3334/app/";
-            
-            [self.navigationController pushViewController:webViewVC animated:YES];
+            [self url:@"http://www.mia.com/search/s?k=%E5%AD%95%E4%BA%A7%E7%94%A8%E5%93%81"];
         }
     }else{
         if (indexPath.row == 0) {
-            WebViewController *webViewVC = [WebViewController new];
+            [self url:@"http://www.mia.com/search/s?k=%E7%B1%B3%E7%B2%89"];
             
-            webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-            
-            webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%B1%B3%E7%B2%89";
-            
-            [self.navigationController pushViewController:webViewVC animated:YES];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E7%B1%B3%E7%B2%89"]];
         }else if (indexPath.row == 1){
-            WebViewController *webViewVC = [WebViewController new];
+            [self url:@"http://www.mia.com/search/s?k=%E6%8E%A8%E8%BD%A6"];
             
-            webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-            
-            webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E6%8E%A8%E8%BD%A6";
-            
-            [self.navigationController pushViewController:webViewVC animated:YES];
-            
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E6%8E%A8%E8%BD%A6"]];
         }else{
-            WebViewController *webViewVC = [WebViewController new];
+            [self url:@"http://www.mia.com/search/s?k=%E5%87%89%E5%B8%AD"];
             
-            webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-            
-            webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E5%87%89%E5%B8%AD";
-            
-            [self.navigationController pushViewController:webViewVC animated:YES];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E5%87%89%E5%B8%AD"]];
         }
     }
 }

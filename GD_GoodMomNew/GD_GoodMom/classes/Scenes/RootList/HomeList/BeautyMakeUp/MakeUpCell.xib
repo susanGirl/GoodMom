@@ -40,6 +40,11 @@
                     <constraint firstItem="bt8-Qt-uNS" firstAttribute="width" secondItem="Lle-af-Pyg" secondAttribute="width" id="vAT-TF-V3U"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="imgView_1" destination="Lle-af-Pyg" id="N9Y-CC-nfy"/>
+                <outlet property="imgView_2" destination="bt8-Qt-uNS" id="Jpu-FK-Zy5"/>
+                <outlet property="imgView_3" destination="ts5-Oi-CjJ" id="qEs-VQ-Ook"/>
+            </connections>
             <point key="canvasLocation" x="387" y="332"/>
         </tableViewCell>
     </objects>

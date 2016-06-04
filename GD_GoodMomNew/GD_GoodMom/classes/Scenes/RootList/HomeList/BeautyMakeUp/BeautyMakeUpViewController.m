@@ -9,11 +9,12 @@
 #import "BeautyMakeUpViewController.h"
 #import "NetWorking.h"
 #import <MJRefresh.h>
-
+#import "MakeUpCell.h"
+#import "WebViewController.h"
 @interface BeautyMakeUpViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic)  UIScrollView *bannerScrollView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
+@property(strong,nonatomic)NSString  *cellTitle;
 
 
 
@@ -58,15 +59,15 @@ static NSString * const makeUpId = @"makeUpIdentifier";
 #define POST_YUN_BODY @"sign=2df6d5bc1e7277833a0693817db7ec57&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464607138615&app_id=android_app_id&timestamp=1464607584&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&params=GxskbDxPn56EtwBwjy_i3HJQ9Utthkf3bcLB31BpWcu169zVWk6u61za7X9kjhmp9X6wRpp9eZ6-TL63lEMYShuo2bBweWlPTzZNHUiCOJ-IgBlYpmSBS1y19szSUgJD1Xy1YHnkPJWBUAIHkqx_Upo7jfFEu0njDqNiAdoTaqM%3D&"
 
 - (void)viewWillAppear:(BOOL)animated{
-    _listArray = [NSMutableArray array];
-    _modulesArray = [NSMutableArray array];
-    _dataArray = [NSMutableArray array];
-    _picArray = [NSMutableArray array];
-    _typeArray = [NSMutableArray array];
-    _outlets_infosArray = [NSMutableArray array];
-    _outlet_itemsArray = [NSMutableArray array];
-    _image_indexArray = [NSMutableArray array];
-    _dict = [NSMutableDictionary dictionary];
+//    _listArray = [NSMutableArray array];
+//    _modulesArray = [NSMutableArray array];
+//    _dataArray = [NSMutableArray array];
+//    _picArray = [NSMutableArray array];
+//    _typeArray = [NSMutableArray array];
+//    _outlets_infosArray = [NSMutableArray array];
+//    _outlet_itemsArray = [NSMutableArray array];
+//    _image_indexArray = [NSMutableArray array];
+//    _dict = [NSMutableDictionary dictionary];
     
 }
 
@@ -100,7 +101,7 @@ static NSString * const makeUpId = @"makeUpIdentifier";
     
     // 下拉刷新
     // 下拉后，开始网络请求
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestTopics)];
+//    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestTopics)];
     // 改变下拉控件的透明度（根据拖拽比例切换透明度）
     self.tableView.mj_header.automaticallyChangeAlpha = YES;
     // 开始刷新
@@ -300,11 +301,21 @@ static NSString * const makeUpId = @"makeUpIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-//    UITableViewCell *cell = [self index:indexPath tableView:tableView];
-    
-//    return cell;
-    return 0;
+    MakeUpCell *cell = [_tableView dequeueReusableCellWithIdentifier:makeUpId];
+    if (indexPath.section == 0) {
+        [cell name:@"防晒1.png" name:@"防晒2.png" name:@"防晒3.png"];
+    }else if(indexPath.section == 1){
+        [cell name:@"护发1.png" name:@"护发2.png" name:@"护发3.png"];
+    }else if(indexPath.section == 2){
+        [cell name:@"廋身1.png" name:@"廋身2.png" name:@"廋身3.png"];
+    }else if(indexPath.section == 3){
+        [cell name:@"面膜1.png" name:@"面膜2.png" name:@"面膜3.png"];
+    }else if(indexPath.section == 4){
+        [cell name:@"包包1.png" name:@"包包2.png" name:@"包包3.png"];
+    }else {
+        [cell name:@"巾纸1.png" name:@"巾纸2.png" name:@"巾纸3.png"];
+    }
+    return cell ;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -321,7 +332,54 @@ static NSString * const makeUpId = @"makeUpIdentifier";
 //        }
 //        return kScreenWidth/2;
 //    }
-    return kScreenW/2;
+    return kScreenW/3;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"aaaa");
+    
+    
+    if (indexPath.section == 0) {
+        [self pushWebView:@"http://www.mia.com/search/s?cat=175"];
+    }else if (indexPath.section == 1) {
+        [self pushWebView:@"http://www.mia.com/search/s?cat=222"];
+    }else if (indexPath.section == 2) {
+        [self pushWebView:@"http://www.mia.com/search/s?cat=210"];
+    }else if (indexPath.section == 3) {
+        [self pushWebView:@"http://www.mia.com/search/s?cat=197"];
+    }else if (indexPath.section == 4) {
+        [self pushWebView:@"http://www.mia.com/search/s?cat=303"];
+    }else {
+        [self pushWebView:@"http://www.mia.com/search/s?cat=270"];
+    }
+}
+- (void)pushWebView:(NSString *)url{
+    
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = url;
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (section == 0) {
+        _cellTitle = @"防晒/隔离";
+    }else if (section == 1){
+        _cellTitle = @"洗发护发";
+    }else if (section == 2){
+        _cellTitle = @"美体塑身";
+    }else if (section == 3){
+        _cellTitle = @"面膜";
+    }else if (section == 4){
+        _cellTitle = @"包包";
+    }else{
+        _cellTitle = @"卫生巾";
+    }
+    return _cellTitle;
 }
 // 绘制tableViewCell时调用的私有方法
 
