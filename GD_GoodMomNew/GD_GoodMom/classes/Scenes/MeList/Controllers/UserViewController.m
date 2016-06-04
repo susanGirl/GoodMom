@@ -22,16 +22,19 @@
 @property (weak, nonatomic) IBOutlet UIView *contentVIew;
 @property (nonatomic, copy) NSArray *items;
 @property(nonatomic,strong)NSString *currentSkinModel;//当前皮肤模式
+<<<<<<< HEAD
 @property(nonatomic,strong) UIBarButtonItem *cancelButton;
 @property(nonatomic,strong)UITableViewCell *cell;
 
+=======
+>>>>>>> 2953117c6d9074e7744952e818a77235121376e1
 @end
 
 @implementation UserViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.items = @[@"我的关注",  @"我的收藏",@"怀孕周期", @"设置"];
     self.navigationItem.title = @"我的页面";
     self.navigationController.navigationBar.backgroundColor = [UIColor magentaColor];
@@ -45,23 +48,18 @@
         // 如果处于登录状态则将按钮标题改为“注销”
         title = @"注销";
         _userNameLabel.text = [FileHandle getUserInfo].userName;
+        //        [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",USER_AVATAR_LOCAL_URL,[FileHandle getUserInfo].avatar]]];
         
     }else{
+        
         title = @"登录";
         _userNameLabel.text = @"未登录";
+        
     }
+    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
-    self.cancelButton = cancelButton;
     self.navigationItem.rightBarButtonItem = cancelButton;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    
-    if ([AVUser currentUser] && [cancelButton.title isEqualToString:@"注销"]) {
-        AVFile *avatarFile = [AVFile fileWithURL:[AVUser currentUser][@"avatar"]];
-        // 获取头像的缩略图
-        [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
-            _avatarImageView.image = image;
-        }];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,6 +72,7 @@
 
 #pragma mark--private Method ----更新皮肤模式，接到模式切换的通知后会调用此方法
 -(void)updateSkinModel{
+
     self.currentSkinModel = [[NSUserDefaults standardUserDefaults]stringForKey:CurrentSkinModelKey];
     if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {
 //        self.tableView.backgroundColor = [UIColor blackColor];
@@ -83,7 +82,12 @@
         self.cell.textLabel.textColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor darkGrayColor];
     }else{
+<<<<<<< HEAD
 //        self.tableView.backgroundColor = [UIColor whiteColor];
+=======
+   
+        self.tableView.backgroundColor = [UIColor whiteColor];
+>>>>>>> 2953117c6d9074e7744952e818a77235121376e1
         self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         self.userNameLabel.textColor = [UIColor blackColor];
         self.contentVIew.backgroundColor = [UIColor whiteColor];
@@ -100,6 +104,7 @@
     __weak UserViewController *userVC = self;
     
     if ([barButton.title isEqualToString:@"注销"]) {
+        
         // 移除本地存储的用户信息
         [FileHandle removeUserInfo];
         _userNameLabel.text = @"未登录";
@@ -108,23 +113,24 @@
         // 存储到服务器
         [[AVUser currentUser] saveInBackground];
         barButton.title = @"登录";
-        _avatarImageView.image = [UIImage imageNamed:@"woman.png"];
+        _avatarImageView.image = [UIImage imageNamed:@"DefaultAvatar"];
     }
     else{
         
         LoginViewController *loginVC = [LoginViewController new];
+        
         // 接收登录页面传过来的用户信息
         loginVC.block = ^(User *user) {
             _userNameLabel.text = user.userName;
             barButton.title = @"注销";
-            AVFile *avatarFile = [AVFile fileWithURL:[AVUser currentUser][@"avatar"]];
+            AVFile *avatarFile = [AVFile fileWithURL:user.avatar];
             // 获取头像的缩略图
             [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
                 _avatarImageView.image = image;
             }];
             
             if (_avatarImageView.image == nil) {
-                _avatarImageView.image = [UIImage imageNamed:@"woman.png"];
+                _avatarImageView.image = [UIImage imageNamed:@"DefaultAvatar"];
             }
         };
         [userVC presentViewController:loginVC animated:YES completion:nil];
@@ -135,11 +141,12 @@
  * 点击头视图执行此方法
  */
 - (IBAction)tapHeaderVIew:(id)sender {
-    if ([self.cancelButton.title isEqualToString:@"登录"]) {
-         LoginViewController *logVC = [LoginViewController new];
+
+    LoginViewController *logVC = [LoginViewController new];
     [self presentViewController:logVC animated:YES completion:nil];
-    }
+    
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -148,12 +155,16 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
     return _items.count;
 }
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     self.cell = cell;
@@ -161,6 +172,20 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     cell.textLabel.text = _items[indexPath.row];
+    
+    
+//    if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {//夜间模式
+//        cell.backgroundColor = [UIColor colorWithRed:35/255.0 green:32/255.0 blue:36/255.0 alpha:1.0];
+//        cell.textLabel.textColor =  [UIColor colorWithRed:111/255.0 green:109/255.0 blue:112/255.0 alpha:1.0];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//     
+//    } else {//夜间模式
+//        cell.backgroundColor =[UIColor whiteColor];
+//        cell.textLabel.textColor = [UIColor blackColor];
+//        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//   
+//    }
+
     return cell;
 }
 
@@ -170,15 +195,24 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     if (indexPath.row == 2) {
+    
         pregnancyViewController *preVC = [pregnancyViewController new];
         [self.navigationController pushViewController:preVC animated:YES];
+        
+        
     }
-    if (indexPath.row == 3){
+    
+    if (indexPath.row == 3) {
       MeTableViewController *meVC = [MeTableViewController new];
         meVC.content = self.userNameLabel.text;
         [self.navigationController pushViewController:meVC animated:YES];
     }
+
+    
+    
+    
 }
 
 /*

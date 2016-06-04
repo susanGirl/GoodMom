@@ -8,13 +8,14 @@
 
 #import "ToolListViewController.h"
 #import "ToolModel.h"
+<<<<<<< HEAD
+=======
 #import "MyView.h"
 #import "HRScorollView.h"
+#import "KnowledgeController.h"//孕期知识
+>>>>>>> 20e1a377213c2ff2e6f6f68e11b828e0456f11dd
 
-//屏幕宽度宏
-#define kWidth  [UIScreen mainScreen].bounds.size.width
-
-@interface ToolListViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>
+@interface ToolListViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 ///主题的视图
 @property(nonatomic,strong)UICollectionView *collectionView;
 ///工具箱中的工具数组
@@ -23,8 +24,6 @@
 @property(nonatomic,strong)NSArray *imageArray;
 ///model的数组
 @property(nonatomic,strong)NSMutableArray *modelArray;
-///轮播图
-@property(nonatomic,strong)HRScorollView *scrolView;
 
 @end
 static NSString *const ToolCellID = @"ToolCellID";
@@ -46,8 +45,6 @@ static NSString *const HeaderViewID = @"HeaderViewID";
         NSLog(@"%@",tool.title);
         [_modelArray addObject:tool];
     }
-    
-    
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
     layout.itemSize = CGSizeMake(140, 200);
     layout.sectionInset = UIEdgeInsetsMake(30, 30, 30, 30);
@@ -61,8 +58,7 @@ static NSString *const HeaderViewID = @"HeaderViewID";
     
     //注册
     [_collectionView registerNib:[UINib nibWithNibName:@"ToolCell" bundle:nil] forCellWithReuseIdentifier:ToolCellID];
-    
-    [_collectionView registerClass:[HRScorollView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderViewID];
+    [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderViewID];
     
     _collectionView.backgroundColor = [UIColor colorWithRed:arc4random_uniform(200)/225.0 green:arc4random_uniform(200)/225.0 blue:arc4random_uniform(200)/225.0 alpha:1.0];
     [self.view addSubview:_collectionView];
@@ -72,19 +68,14 @@ static NSString *const HeaderViewID = @"HeaderViewID";
     
 }
 
-
-#pragma mark 页面加载时更新数据
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.collectionView reloadData];
 }
-
-#pragma mark UICollectionViewControllerDelegate代理方法
-//一个分区内的行数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return self.toolArray.count;
 }
-//设置cell
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ToolCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ToolCellID forIndexPath:indexPath];
@@ -95,15 +86,18 @@ static NSString *const HeaderViewID = @"HeaderViewID";
     return cell;
     
 }
-//设置区头
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     
-    HRScorollView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderViewID forIndexPath:indexPath];
-//    header.backgroundColor = [UIColor purpleColor];
+    UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:HeaderViewID forIndexPath:indexPath];
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"9.jpg"]];
+    imageView.frame = header.frame;
+    [header addSubview:imageView];
+    header.backgroundColor = [UIColor purpleColor];
     return header;
     
 }
-//选中item方法事件
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.row == 0) {
@@ -117,10 +111,16 @@ static NSString *const HeaderViewID = @"HeaderViewID";
         
         [self.navigationController pushViewController:storyVC animated:YES];
         
+<<<<<<< HEAD
+=======
     }else if (indexPath.row == 2){
+        KnowledgeController *knowledgeVC = [[KnowledgeController alloc]init];
+        [self.navigationController pushViewController:knowledgeVC animated:YES];
         
-        
+>>>>>>> 20e1a377213c2ff2e6f6f68e11b828e0456f11dd
     }
+    
+    
 }
 
 

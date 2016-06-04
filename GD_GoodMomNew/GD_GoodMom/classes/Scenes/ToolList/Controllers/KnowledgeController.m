@@ -7,48 +7,90 @@
 //
 
 #import "KnowledgeController.h"
+#import "KnowledgeCell.h"//自定义cell
+#import "KnowDetailViewController.h"//分组界面
+#import "KnowTitleViewController.h"//题目界面
 
 @interface KnowledgeController ()
-
-
+//time数组
+@property(nonatomic,strong)NSMutableArray *AllTime;
+//times数组
+@property(nonatomic,strong)NSMutableArray *AllTimes;
 
 @end
-
+static NSString * const tableViewCellID = @"systemCellID";
 @implementation KnowledgeController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //数据
+    [self setDataUpdata];
+    //注册
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:tableViewCellID];
+
+}
+//数据解析
+- (void)setDataUpdata{
     
-  
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"Knowledge.plist" ofType:nil];
+    NSArray *timeArray = [NSArray arrayWithContentsOfFile:path];
+    _AllTime = [NSMutableArray array].mutableCopy;
+    _AllTimes = [NSMutableArray array].mutableCopy;
+    for (NSDictionary *dic in timeArray) {
+        NSString *time = dic[@"time"];
+        [_AllTime addObject:[NSString stringWithFormat:@"%@",time]];
+        NSArray *tempArray = dic[@"times"];
+        [_AllTimes addObject:tempArray];
+    }
+    
+    
     
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return _AllTime.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    // Configure the cell...
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableViewCellID forIndexPath:indexPath];
+    cell.textLabel.text = _AllTime[indexPath.row];
     return cell;
+    
 }
-*/
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row<5) {
+        KnowDetailViewController *knowDetailVC = [[KnowDetailViewController alloc]init];
+        knowDetailVC.timesArray = _AllTimes[indexPath.row];
+        knowDetailVC.titleName = _AllTime[indexPath.row];
+        [self.navigationController pushViewController:knowDetailVC animated:YES];
+    }else{
+        KnowTitleViewController *knowTileVC = [[KnowTitleViewController alloc]init];
+        knowTileVC.titleArray = [_AllTimes lastObject];
+        knowTileVC.titleName = [_AllTime lastObject];
+        [self.navigationController pushViewController:knowTileVC animated:YES];
+    }
+   
+    
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+    
+}
 
 /*
 // Override to support conditional editing of the table view.
