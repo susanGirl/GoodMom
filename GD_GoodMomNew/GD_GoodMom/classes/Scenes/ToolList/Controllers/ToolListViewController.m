@@ -10,6 +10,7 @@
 #import "ToolModel.h"
 #import "MyView.h"
 #import "HRScorollView.h"
+#import "KnowledgeController.h"//孕期知识
 
 //屏幕宽度宏
 #define kWidth  [UIScreen mainScreen].bounds.size.width
@@ -118,7 +119,8 @@ static NSString *const HeaderViewID = @"HeaderViewID";
         [self.navigationController pushViewController:storyVC animated:YES];
         
     }else if (indexPath.row == 2){
-        
+        KnowledgeController *knowledgeVC = [[KnowledgeController alloc]init];
+        [self.navigationController pushViewController:knowledgeVC animated:YES];
         
     }
 }

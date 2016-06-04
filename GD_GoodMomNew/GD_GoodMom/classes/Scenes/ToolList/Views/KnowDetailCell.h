@@ -1,13 +1,13 @@
 //
-//  KnoeledgeModel.m
+//  KnowDetailCell.h
 //  GD_GoodMom
 //
 //  Created by lanou3g on 16/6/2.
 //  Copyright © 2016年 温哲. All rights reserved.
 //
 
-#import "KnoeledgeModel.h"
+#import <UIKit/UIKit.h>
 
-@implementation KnoeledgeModel
+@interface KnowDetailCell : UITableViewCell
 
 @end

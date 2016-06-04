@@ -1,94 +1,69 @@
 //
-//  KnowledgeController.m
+//  KnowTitleViewController.m
 //  GD_GoodMom
 //
-//  Created by lanou3g on 16/6/2.
+//  Created by lanou3g on 16/6/3.
 //  Copyright © 2016年 温哲. All rights reserved.
 //
 
-#import "KnowledgeController.h"
-#import "KnowledgeCell.h"//自定义cell
-#import "KnowDetailViewController.h"//分组界面
-#import "KnowTitleViewController.h"//题目界面
+#import "KnowTitleViewController.h"
 
-@interface KnowledgeController ()
-//time数组
-@property(nonatomic,strong)NSMutableArray *AllTime;
-//times数组
-@property(nonatomic,strong)NSMutableArray *AllTimes;
+@interface KnowTitleViewController ()
+
+//总数据
+@property(nonatomic,strong)NSMutableArray *allKnowTitle;
 
 @end
-static NSString * const tableViewCellID = @"systemCellID";
-@implementation KnowledgeController
-
+static NSString *const titleCellID = @"titleCellID";
+@implementation KnowTitleViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //数据
+    self.navigationItem.title = _titleName;
     [self setDataUpdata];
-    //注册
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:tableViewCellID];
-
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:titleCellID];
 }
 //数据解析
 - (void)setDataUpdata{
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"Knowledge.plist" ofType:nil];
-    NSArray *timeArray = [NSArray arrayWithContentsOfFile:path];
-    _AllTime = [NSMutableArray array].mutableCopy;
-    _AllTimes = [NSMutableArray array].mutableCopy;
-    for (NSDictionary *dic in timeArray) {
-        NSString *time = dic[@"time"];
-        [_AllTime addObject:[NSString stringWithFormat:@"%@",time]];
-        NSArray *tempArray = dic[@"times"];
-        [_AllTimes addObject:tempArray];
+    _allKnowTitle = [NSMutableArray array].mutableCopy;
+    for (NSDictionary *dict in _titleArray) {
+        KnowTitleModel *model = [KnowTitleModel new];
+        [model setValuesForKeysWithDictionary:dict];
+        [_allKnowTitle addObject:model];
     }
     
     
-    
 }
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _AllTime.count;
+    return _allKnowTitle.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableViewCellID forIndexPath:indexPath];
-    cell.textLabel.text = _AllTime[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:titleCellID forIndexPath:indexPath];
+    KnowTitleModel *model = _allKnowTitle[indexPath.row];
+    cell.textLabel.text = model.title;
     return cell;
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row<5) {
-        KnowDetailViewController *knowDetailVC = [[KnowDetailViewController alloc]init];
-        knowDetailVC.timesArray = _AllTimes[indexPath.row];
-        knowDetailVC.titleName = _AllTime[indexPath.row];
-        [self.navigationController pushViewController:knowDetailVC animated:YES];
-    }else{
-        KnowTitleViewController *knowTileVC = [[KnowTitleViewController alloc]init];
-        knowTileVC.titleArray = [_AllTimes lastObject];
-        knowTileVC.titleName = [_AllTime lastObject];
-        [self.navigationController pushViewController:knowTileVC animated:YES];
-    }
-   
     
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50;
+    
+    
     
 }
 
