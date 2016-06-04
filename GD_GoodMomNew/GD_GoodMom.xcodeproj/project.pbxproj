@@ -142,7 +142,6 @@
 		C25DE02E1D0263F2007E562E /* KnowledgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE02A1D0263F2007E562E /* KnowledgeCell.m */; };
 		C25DE02F1D0263F2007E562E /* KnowledgeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C25DE02B1D0263F2007E562E /* KnowledgeCell.xib */; };
 		C25DE0321D0263FC007E562E /* webView.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE0311D0263FC007E562E /* webView.m */; };
-		C25DE03A1D0264AB007E562E /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0331D0264AB007E562E /* 1.jpg */; };
 		C25DE03B1D0264AB007E562E /* 备孕生活.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0341D0264AB007E562E /* 备孕生活.jpg */; };
 		C25DE03C1D0264AB007E562E /* 不孕不育.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0351D0264AB007E562E /* 不孕不育.jpg */; };
 		C25DE03D1D0264AB007E562E /* 其他.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0361D0264AB007E562E /* 其他.jpg */; };
@@ -446,7 +445,6 @@
 		C25DE02B1D0263F2007E562E /* KnowledgeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KnowledgeCell.xib; sourceTree = "<group>"; };
 		C25DE0301D0263FC007E562E /* webView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webView.h; sourceTree = "<group>"; };
 		C25DE0311D0263FC007E562E /* webView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = webView.m; sourceTree = "<group>"; };
-		C25DE0331D0264AB007E562E /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		C25DE0341D0264AB007E562E /* 备孕生活.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "备孕生活.jpg"; sourceTree = "<group>"; };
 		C25DE0351D0264AB007E562E /* 不孕不育.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "不孕不育.jpg"; sourceTree = "<group>"; };
 		C25DE0361D0264AB007E562E /* 其他.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "其他.jpg"; sourceTree = "<group>"; };
@@ -706,12 +704,6 @@
 			isa = PBXGroup;
 			children = (
 				C25DE0B51D026557007E562E /* 孕宝图 */,
-				C25DE0331D0264AB007E562E /* 1.jpg */,
-				C25DE0341D0264AB007E562E /* 备孕生活.jpg */,
-				C25DE0351D0264AB007E562E /* 不孕不育.jpg */,
-				C25DE0361D0264AB007E562E /* 其他.jpg */,
-				C25DE0371D0264AB007E562E /* 生理知识.jpg */,
-				C25DE0381D0264AB007E562E /* 验孕检查.jpg */,
 				C25DE0391D0264AB007E562E /* Knowledge.plist */,
 				C21B96231CFD3C01001E6A17 /* image */,
 				C21B95941CFD3BC2001E6A17 /* Story.plist */,
@@ -865,6 +857,11 @@
 		C21B96231CFD3C01001E6A17 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				C25DE0341D0264AB007E562E /* 备孕生活.jpg */,
+				C25DE0351D0264AB007E562E /* 不孕不育.jpg */,
+				C25DE0361D0264AB007E562E /* 其他.jpg */,
+				C25DE0371D0264AB007E562E /* 生理知识.jpg */,
+				C25DE0381D0264AB007E562E /* 验孕检查.jpg */,
 				C21B95961CFD3BE5001E6A17 /* 孕期知识.jpg */,
 				C21B95971CFD3BE5001E6A17 /* 123.jpg */,
 				C21B95981CFD3BE5001E6A17 /* 故事会.jpg */,
@@ -1556,7 +1553,6 @@
 				C2D22E1F1CF73123002F1F36 /* AboutViewController.xib in Resources */,
 				C25DE10A1D0265A9007E562E /* set.png in Resources */,
 				C23D90EF1CFD8C3B00B691A8 /* 02.jpg in Resources */,
-				C25DE03A1D0264AB007E562E /* 1.jpg in Resources */,
 				C21B95AB1CFD3BE5001E6A17 /* 5.jpg in Resources */,
 				DEC2F0001CFC74E90020529A /* PublishViewController.xib in Resources */,
 				C21B95A51CFD3BE5001E6A17 /* 故事会.jpg in Resources */,
