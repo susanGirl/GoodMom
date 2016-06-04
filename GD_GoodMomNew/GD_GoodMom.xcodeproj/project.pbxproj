@@ -60,7 +60,6 @@
 		C21B96A31CFD6E23001E6A17 /* StoryDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C21B968E1CFD6E23001E6A17 /* StoryDetailCell.xib */; };
 		C21B96A41CFD6E23001E6A17 /* ToolCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B96901CFD6E23001E6A17 /* ToolCell.m */; };
 		C21B96A51CFD6E23001E6A17 /* ToolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C21B96911CFD6E23001E6A17 /* ToolCell.xib */; };
-		C21B971B1CFDD13B001E6A17 /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B971A1CFDD13B001E6A17 /* MyView.m */; };
 		C21B97211CFDD224001E6A17 /* 14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C21B971D1CFDD224001E6A17 /* 14.jpg */; };
 		C21B97221CFDD224001E6A17 /* 12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C21B971E1CFDD224001E6A17 /* 12.jpg */; };
 		C21B97231CFDD224001E6A17 /* 11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C21B971F1CFDD224001E6A17 /* 11.jpg */; };
@@ -132,7 +131,9 @@
 		C23D911B1CFD91F900B691A8 /* WMMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = C23D91131CFD91F900B691A8 /* WMMenuView.m */; };
 		C23D911C1CFD91F900B691A8 /* WMProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = C23D91151CFD91F900B691A8 /* WMProgressView.m */; };
 		C23D911D1CFD91F900B691A8 /* WMPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = C23D91181CFD91F900B691A8 /* WMPageController.m */; };
-		C247BC0D1CFF356A00FBD5C9 /* HRScorollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C247BC0C1CFF356A00FBD5C9 /* HRScorollView.m */; };
+		C248A04B1D031C95000119F7 /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C248A04A1D031C95000119F7 /* MyView.m */; };
+		C248A04E1D031CBB000119F7 /* HRScorollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C248A04D1D031CBB000119F7 /* HRScorollView.m */; };
+		C248A0501D031D28000119F7 /* Knowledge.plist in Resources */ = {isa = PBXBuildFile; fileRef = C248A04F1D031D28000119F7 /* Knowledge.plist */; };
 		C25DE01E1D026222007E562E /* KnowledgeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE01B1D026222007E562E /* KnowledgeModel.m */; };
 		C25DE01F1D026222007E562E /* KnowTitleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE01D1D026222007E562E /* KnowTitleModel.m */; };
 		C25DE0241D0263E4007E562E /* KnowDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25DE0211D0263E4007E562E /* KnowDetailViewController.m */; };
@@ -147,7 +148,6 @@
 		C25DE03D1D0264AB007E562E /* 其他.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0361D0264AB007E562E /* 其他.jpg */; };
 		C25DE03E1D0264AB007E562E /* 生理知识.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0371D0264AB007E562E /* 生理知识.jpg */; };
 		C25DE03F1D0264AB007E562E /* 验孕检查.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0381D0264AB007E562E /* 验孕检查.jpg */; };
-		C25DE0401D0264AB007E562E /* Knowledge.plist in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0391D0264AB007E562E /* Knowledge.plist */; };
 		C25DE0EB1D0265A9007E562E /* add_h.png in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0B61D0265A9007E562E /* add_h.png */; };
 		C25DE0EC1D0265A9007E562E /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0B71D0265A9007E562E /* add.png */; };
 		C25DE0ED1D0265A9007E562E /* addNote_h.png in Resources */ = {isa = PBXBuildFile; fileRef = C25DE0B81D0265A9007E562E /* addNote_h.png */; };
@@ -324,8 +324,6 @@
 		C21B968F1CFD6E23001E6A17 /* ToolCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolCell.h; sourceTree = "<group>"; };
 		C21B96901CFD6E23001E6A17 /* ToolCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolCell.m; sourceTree = "<group>"; };
 		C21B96911CFD6E23001E6A17 /* ToolCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolCell.xib; sourceTree = "<group>"; };
-		C21B97191CFDD13B001E6A17 /* MyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
-		C21B971A1CFDD13B001E6A17 /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
 		C21B971D1CFDD224001E6A17 /* 14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 14.jpg; sourceTree = "<group>"; };
 		C21B971E1CFDD224001E6A17 /* 12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 12.jpg; sourceTree = "<group>"; };
 		C21B971F1CFDD224001E6A17 /* 11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 11.jpg; sourceTree = "<group>"; };
@@ -427,8 +425,11 @@
 		C23D91161CFD91F900B691A8 /* WMPageConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPageConst.h; sourceTree = "<group>"; };
 		C23D91171CFD91F900B691A8 /* WMPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPageController.h; sourceTree = "<group>"; };
 		C23D91181CFD91F900B691A8 /* WMPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPageController.m; sourceTree = "<group>"; };
-		C247BC0B1CFF356A00FBD5C9 /* HRScorollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRScorollView.h; sourceTree = "<group>"; };
-		C247BC0C1CFF356A00FBD5C9 /* HRScorollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRScorollView.m; sourceTree = "<group>"; };
+		C248A0491D031C95000119F7 /* MyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
+		C248A04A1D031C95000119F7 /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
+		C248A04C1D031CBB000119F7 /* HRScorollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRScorollView.h; sourceTree = "<group>"; };
+		C248A04D1D031CBB000119F7 /* HRScorollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRScorollView.m; sourceTree = "<group>"; };
+		C248A04F1D031D28000119F7 /* Knowledge.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Knowledge.plist; sourceTree = "<group>"; };
 		C25DE01A1D026222007E562E /* KnowledgeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeModel.h; sourceTree = "<group>"; };
 		C25DE01B1D026222007E562E /* KnowledgeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowledgeModel.m; sourceTree = "<group>"; };
 		C25DE01C1D026222007E562E /* KnowTitleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowTitleModel.h; sourceTree = "<group>"; };
@@ -450,7 +451,6 @@
 		C25DE0361D0264AB007E562E /* 其他.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "其他.jpg"; sourceTree = "<group>"; };
 		C25DE0371D0264AB007E562E /* 生理知识.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "生理知识.jpg"; sourceTree = "<group>"; };
 		C25DE0381D0264AB007E562E /* 验孕检查.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "验孕检查.jpg"; sourceTree = "<group>"; };
-		C25DE0391D0264AB007E562E /* Knowledge.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Knowledge.plist; sourceTree = "<group>"; };
 		C25DE0B61D0265A9007E562E /* add_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_h.png; sourceTree = "<group>"; };
 		C25DE0B71D0265A9007E562E /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		C25DE0B81D0265A9007E562E /* addNote_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addNote_h.png; sourceTree = "<group>"; };
@@ -703,8 +703,8 @@
 		C21180631CF304F40099782B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C248A04F1D031D28000119F7 /* Knowledge.plist */,
 				C25DE0B51D026557007E562E /* 孕宝图 */,
-				C25DE0391D0264AB007E562E /* Knowledge.plist */,
 				C21B96231CFD3C01001E6A17 /* image */,
 				C21B95941CFD3BC2001E6A17 /* Story.plist */,
 				DED1CCE21CFD2F4D00D64F62 /* pika.gif */,
@@ -940,8 +940,8 @@
 				C25DE0291D0263F2007E562E /* KnowledgeCell.h */,
 				C25DE02A1D0263F2007E562E /* KnowledgeCell.m */,
 				C25DE02B1D0263F2007E562E /* KnowledgeCell.xib */,
-				C21B97191CFDD13B001E6A17 /* MyView.h */,
-				C21B971A1CFDD13B001E6A17 /* MyView.m */,
+				C248A0491D031C95000119F7 /* MyView.h */,
+				C248A04A1D031C95000119F7 /* MyView.m */,
 				C21B96861CFD6E23001E6A17 /* NoteCell.h */,
 				C21B96871CFD6E23001E6A17 /* NoteCell.m */,
 				C21B96881CFD6E23001E6A17 /* NoteCell.xib */,
@@ -954,8 +954,8 @@
 				C21B968F1CFD6E23001E6A17 /* ToolCell.h */,
 				C21B96901CFD6E23001E6A17 /* ToolCell.m */,
 				C21B96911CFD6E23001E6A17 /* ToolCell.xib */,
-				C247BC0B1CFF356A00FBD5C9 /* HRScorollView.h */,
-				C247BC0C1CFF356A00FBD5C9 /* HRScorollView.m */,
+				C248A04C1D031CBB000119F7 /* HRScorollView.h */,
+				C248A04D1D031CBB000119F7 /* HRScorollView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1476,7 +1476,6 @@
 				C25DE1171D0265A9007E562E /* turn_h.png in Resources */,
 				C23D91061CFD8C3B00B691A8 /* 爆款推荐.jpg in Resources */,
 				C25DE0F61D0265A9007E562E /* doctor.png in Resources */,
-				C25DE0401D0264AB007E562E /* Knowledge.plist in Resources */,
 				C23D91081CFD8C3B00B691A8 /* 米粉.png in Resources */,
 				C25DE0FC1D0265A9007E562E /* help.png in Resources */,
 				C25DE1051D0265A9007E562E /* round1.png in Resources */,
@@ -1537,6 +1536,7 @@
 				C23D90FD1CFD8C3B00B691A8 /* YunYingType_2.jpg in Resources */,
 				C25DE03B1D0264AB007E562E /* 备孕生活.jpg in Resources */,
 				C25DE0F91D0265A9007E562E /* exit.png in Resources */,
+				C248A0501D031D28000119F7 /* Knowledge.plist in Resources */,
 				C2CB9E801CF45671003CD4E9 /* woman.png in Resources */,
 				C23D90F81CFD8C3B00B691A8 /* cell_1_2.jpg in Resources */,
 				C25DE1161D0265A9007E562E /* theme.png in Resources */,
@@ -1632,7 +1632,6 @@
 				DEC2EFE51CFC6E470020529A /* TopicCommentCell.m in Sources */,
 				C23D911A1CFD91F900B691A8 /* WMMenuItem.m in Sources */,
 				C25DE0241D0263E4007E562E /* KnowDetailViewController.m in Sources */,
-				C247BC0D1CFF356A00FBD5C9 /* HRScorollView.m in Sources */,
 				DEC2F0031CFC74E90020529A /* PlaceholderTextView.m in Sources */,
 				C23D90C61CFD8C3B00B691A8 /* BeautyMakeUpViewController.m in Sources */,
 				C23D90D51CFD8C3B00B691A8 /* CellType_2.m in Sources */,
@@ -1648,10 +1647,10 @@
 				DEC2EFE01CFC6E470020529A /* FriendsListViewController.m in Sources */,
 				C20703E21CFBE6AC00AE9D43 /* DatabaseManager.m in Sources */,
 				C21B969D1CFD6E23001E6A17 /* ToolModel.m in Sources */,
-				C21B971B1CFDD13B001E6A17 /* MyView.m in Sources */,
 				DEC2EFE11CFC6E470020529A /* TopicCommentViewController.m in Sources */,
 				C25DE02E1D0263F2007E562E /* KnowledgeCell.m in Sources */,
 				DEC2EFE91CFC6F970020529A /* Topic.m in Sources */,
+				C248A04E1D031CBB000119F7 /* HRScorollView.m in Sources */,
 				C23D90D91CFD8C3B00B691A8 /* CellType_4.m in Sources */,
 				C21B96621CFD3C98001E6A17 /* FileDataHandle.m in Sources */,
 				C21B96A41CFD6E23001E6A17 /* ToolCell.m in Sources */,
@@ -1692,6 +1691,7 @@
 				C2CB9E871CF45808003CD4E9 /* LoginViewController.m in Sources */,
 				C23D90EB1CFD8C3B00B691A8 /* CustomCell.m in Sources */,
 				C23D90DD1CFD8C3B00B691A8 /* NetWorking.m in Sources */,
+				C248A04B1D031C95000119F7 /* MyView.m in Sources */,
 				C211806D1CF307720099782B /* RootViewController.m in Sources */,
 				C23D911D1CFD91F900B691A8 /* WMPageController.m in Sources */,
 				C2B6174D1CF5CD070087CE72 /* SkinMode.m in Sources */,
