@@ -8,12 +8,6 @@
 
 #import "ToolListViewController.h"
 #import "ToolModel.h"
-<<<<<<< HEAD
-=======
-#import "MyView.h"
-#import "HRScorollView.h"
-#import "KnowledgeController.h"//孕期知识
->>>>>>> 20e1a377213c2ff2e6f6f68e11b828e0456f11dd
 
 @interface ToolListViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 ///主题的视图
@@ -111,13 +105,6 @@ static NSString *const HeaderViewID = @"HeaderViewID";
         
         [self.navigationController pushViewController:storyVC animated:YES];
         
-<<<<<<< HEAD
-=======
-    }else if (indexPath.row == 2){
-        KnowledgeController *knowledgeVC = [[KnowledgeController alloc]init];
-        [self.navigationController pushViewController:knowledgeVC animated:YES];
-        
->>>>>>> 20e1a377213c2ff2e6f6f68e11b828e0456f11dd
     }
     
     

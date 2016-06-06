@@ -8,8 +8,6 @@
 
 #import "GoodFoodViewController.h"
 #import "NetWorking.h"
-#import <MJRefresh.h>
-
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -41,7 +39,6 @@
 @property(strong,nonatomic)NSMutableDictionary  *dict;
 
 @property(strong,nonatomic)UITableView  *tableView;
-@property(strong,nonatomic)UIView  *headerView;
 @end
 
 static NSString * const customCellID = @"customCellReuseIdentifier";
@@ -74,7 +71,7 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     self.view.backgroundColor = [UIColor whiteColor];
     
     // 创建tableView
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, (kScreenWidth*5/8)+130, kScreenWidth, kScreenHeight-130-(kScreenWidth*5/8)-50) style:UITableViewStylePlain];
     _tableView.separatorColor = [UIColor redColor];
     // 设置代理
     self.tableView.delegate = self;
@@ -89,48 +86,22 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     // 添加到视图上
     [self.view addSubview:self.tableView];
     
-    
+    [self setUp];
     [self netWorkingAndSetUp];
     [self netWorkingWithTableView];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-    
-    // 下拉刷新
-    [self setupRefresh];
 }
-#pragma mark -- 下拉刷新、上拉加载 --
-- (void)setupRefresh {
-    
-    // 下拉刷新
-    // 下拉后，开始网络请求
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(netWorkingAndSetUp)];
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(netWorkingWithTableView)];
-    // 改变下拉控件的透明度（根据拖拽比例切换透明度）
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    // 开始刷新
-    [self.tableView.mj_header beginRefreshing];
-    
-}
-#pragma mark -- 刷新数据 --
-- (void)reloadAllData {
-    [self.tableView reloadData];
-    // 停止下拉刷新
-    [self.tableView.mj_header endRefreshing];
-    // 隐藏缓冲进度条
-//    [MBProgressHUD hideHUDForView:self.tableView animated:YES];
-}
+
 #pragma mark --美食
 #pragma mark --轮播图
 // 解析数据并画图赋值
 - (void)netWorkingAndSetUp{
     
     _imagesScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth*5/8)];
-    _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, kScreenW*5/8+130)];
-    _tableView.tableHeaderView = _headerView;
-    [self.headerView addSubview:_imagesScrollView];
-    [self setUp];
+    [self.view addSubview:_imagesScrollView];
     self.post_Url = @"http://api.miyabaobei.com/channel/banner/";
     self.post_Body = @"sign=d4d2d33882f014c6c46bf52f179c0da5&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464610598311&app_id=android_app_id&timestamp=1464610624&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&params=A85f788qNyTuy_INo-NBkhN50TBpcy_j1sZN_CYyYCYz0mlC4RzOq2ehXdO1Iokq4XCZ_pd20c98kQnxVUeMH-GnITjYIBs6bXg5RNdbgep0XMLqkxDMOQ7ntW40Z1Tvod3bYpSpvaOLGsJmfxWp8mb1-2hh6d9Tw7E4OicUZaA%3D&";
-    __weak GoodFoodViewController *googVC = self;
+    
     [NetWorking netWorkingPostActionWithURLString:self.post_Url bodyURLString:self.post_Body completeHandle:^(NSData * _Nullable data) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
         
@@ -148,10 +119,6 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
         _count = self.imagesArray.count;
 //        NSLog(@"%ld",_count);
         [self drawView];
-        // 回到主线程，刷新列表
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [googVC reloadAllData];
-        });
     }];
     
     
@@ -211,7 +178,7 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     
     // 注册自定义cell
     [collectionView registerClass:[CustomCell class] forCellWithReuseIdentifier:customCellID];
-    [self.headerView addSubview:collectionView];
+    [self.view addSubview:collectionView];
     
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -274,7 +241,7 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
 }
 #pragma mark --tableView
 - (void)netWorkingWithTableView{
-    __weak GoodFoodViewController *goodVC = self;
+    
     [NetWorking netWorkingPostActionWithURLString:POST_YUN_URL bodyURLString:POST_YUN_BODY completeHandle:^(NSData * _Nullable data) {
         
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -293,7 +260,7 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
         //        }
         dispatch_async(dispatch_get_main_queue(), ^{
             // 回到主线程-->切记刷新-->刷新UI
-            [goodVC reloadAllData];
+            [self.tableView reloadData];
         });
         
     }];
@@ -373,16 +340,16 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (indexPath.section < self.listArray.count) {
-        if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 2 || indexPath.section == 3) {
-            if (indexPath.row == 0) {
-                return 70;
-            }
-            return kScreenWidth/2;
-        }
-        return kScreenWidth/2;
-    }
+//    
+//    if (indexPath.section < self.listArray.count) {
+//        if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 2 || indexPath.section == 3) {
+//            if (indexPath.row == 0) {
+//                return 70;
+//            }
+//            return kScreenWidth/2;
+//        }
+//        return kScreenWidth/2;
+//    }
     return kScreenWidth/2;
 }
 // 绘制tableViewCell时调用的私有方法
